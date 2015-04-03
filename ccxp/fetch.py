@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 import requests
 from lxml.html import fromstring
 
-from ccxp.data import Semester, Department
+from ccxp.data import Semester, Department, Course
 from ccxp.decaptcha import decaptcha
 
 
@@ -44,13 +44,25 @@ class Browser:
             Department,
             '/html/body/div/form/table[1]/tr[4]/td/select')
 
-    def get_department(self, value):
+    def get_department_html(self, value):
         select = self.xpath1('/html/body/div/form/table[1]/tr[4]/td/select')
         select.value = value
         form = xpath1(self.index, '/html/body/div/form')
         response = self.submit_form(form)
-        response.encoding = 'big5'
-        return response.text
+        return response.content
+
+    def get_courses_from_department(self, value):
+        document = fromstring(
+            self.get_department_html(value),
+            base_url=index_url)
+        trs = document.xpath(
+            '/html/body/div/form/table/tr[contains(@class, "class3")]')
+        assert not (len(trs) % 2)
+        return [
+            Course(*args)
+            for args
+            in zip(trs[::2], trs[1::2])
+        ]
 
     def get_captcha_url(self):
         img = self.xpath1('/html/body/div/form/table[2]/tr/td/img')
@@ -71,5 +83,4 @@ if __name__ == '__main__':
     import pprint
     browser = Browser()
     browser.set_captcha(decaptcha(browser.get_captcha_url()))
-    for department in browser.get_departments():
-        print(len(browser.get_department(department['abbr'])))
+    print(browser.get_courses_from_department('PME'))
