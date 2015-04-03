@@ -19,4 +19,4 @@ class Department(dict):
                 self['abbr'],
                 self['name_zh'],
                 self['name_en']
-            ) = tag.text.split(None, 1) + [None]
+            ) = tag.text.split(None, 1) + ['']

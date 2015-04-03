@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}狀態{% endblock %}
+
+{% block content %}
+<h3>統計</h3>
+<table class="table">
+  <tr>
+    <th>類型</th>
+    <th>數量</th>
+  </tr>
+  <tr>
+    <td>系所</td>
+    <td>{{ department_count }}</td>
+  </tr>
+  <tr>
+    <td>學期</td>
+    <td>{{ semester_count }}</td>
+  </tr>
+</table>
+<h3>學期</h3>
+<table class="table">
+  <tr>
+    <th>學期</th>
+    <th>課程數量</th>
+    <th>更新時間</th>
+    <th>狀態</th>
+  </tr>
+  {% for semester in semesters %}
+  <tr>
+    <td>{{ semester.name }}</td>
+    <td>{{ semester.updated }}</td>
+    <td>{{ semester.course_set.count() }}</td>
+    <td>{% if semester.ready %}更新完成{% else %}更新中{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr>
+  <td colspan="4">無資料</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
