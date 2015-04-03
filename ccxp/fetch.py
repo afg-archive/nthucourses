@@ -52,10 +52,13 @@ class Browser:
         response.encoding = 'big5'
         return response.text
 
-    def set_captcha(self):
+    def get_captcha_url(self):
         img = self.xpath1('/html/body/div/form/table[2]/tr/td/img')
+        return urljoin(index_url, img.attrib['src'])
+
+    def set_captcha(self, code):
         captcha = self.xpath1('/html/body/div/form/table[2]/tr/td/input')
-        captcha.value = decaptcha(urljoin(index_url, img.attrib['src']))
+        captcha.value = code
 
     def submit_form(self, form):
         values = form.form_values() + [('cond', 'a')]
@@ -67,6 +70,6 @@ class Browser:
 if __name__ == '__main__':
     import pprint
     browser = Browser()
-    browser.set_captcha()
+    browser.set_captcha(decaptcha(browser.get_captcha_url()))
     for department in browser.get_departments():
         print(len(browser.get_department(department['abbr'])))
