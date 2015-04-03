@@ -4,6 +4,6 @@
 {% include "navbar.html" %}
 <div class="container-fluid">
   <h1>{% block h1 %}{% block title %}{% endblock %}{% endblock %}</h1>
-  {% block content %}{% endblock %}
+  {% block _content %}{% block content %}{% endblock %}{% endblock %}
 </div>
 {% endblock %}
