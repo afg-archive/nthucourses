@@ -49,15 +49,16 @@ class Browser:
         select.value = value
         form = xpath1(self.index, '/html/body/div/form')
         response = self.submit_form(form)
-        return response.content
+        response.encoding = 'big5'
+        return response.text
 
-    def get_courses_from_department(self, value):
+    def get_courses_by_department(self, value):
         document = fromstring(
             self.get_department_html(value),
             base_url=index_url)
         trs = document.xpath(
             '/html/body/div/form/table/tr[contains(@class, "class3")]')
-        assert not (len(trs) % 2)
+        assert not (len(trs) % 2), len(trs)
         return [
             Course(*args)
             for args
@@ -74,7 +75,6 @@ class Browser:
 
     def submit_form(self, form):
         values = form.form_values() + [('cond', 'a')]
-        print(values)
         url = form.action
         return self.session.post(url, data=values)
 
@@ -83,4 +83,4 @@ if __name__ == '__main__':
     import pprint
     browser = Browser()
     browser.set_captcha(decaptcha(browser.get_captcha_url()))
-    print(browser.get_courses_from_department('PME'))
+    print(browser.get_courses_by_department('GE'))

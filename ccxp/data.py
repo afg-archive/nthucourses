@@ -50,7 +50,6 @@ class Course(dict):
         rc = list(filter(None, extract_multirow(
             tds[4].xpath('div/a')[0],
             2)))
-        print(rc)
         if rc:
             self['room'], capacity = rc[:2]  # TODO
             self['capacity'] = int(capacity.partition('容量')[-1])
