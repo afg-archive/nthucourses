@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 source $OPENSHIFT_HOMEDIR/python/virtenv/venv/bin/activate
-cd $OPENSHIFT_HOMEDIR
+cd $OPENSHIFT_REPO_DIR
 
 pip install -r requires.txt
 ./manage.py migrate
