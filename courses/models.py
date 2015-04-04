@@ -12,11 +12,17 @@ class Semester(models.Model):
     name = models.CharField(max_length=TYPICAL_SIZE)
     ready = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ('-year', '-section', '-created')
+
 
 class Department(models.Model):
     abbr = models.CharField(max_length=4)
     name_zh = models.CharField(max_length=TYPICAL_SIZE)
     name_en = models.CharField(max_length=TYPICAL_SIZE)
+
+    class Meta:
+        ordering = ('abbr',)
 
     def __str__(self):
         return self.abbr
@@ -42,6 +48,9 @@ class Course(models.Model):
     required_by = models.CharField(max_length=TYPICAL_SIZE)  # TODO
     syllabus_text = models.TextField()
     syllabus_attachment = None  # TODO
+
+    class Meta:
+        ordering = ('no', 'semester')
 
     def __str__(self):
         return self.no
