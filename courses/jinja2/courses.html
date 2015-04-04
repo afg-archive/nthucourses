@@ -10,4 +10,7 @@
   {{ render_form(form, layout='inline') }}
   <input class="btn btn-default" type="submit">
 </form>
+{% if result %}
+{{ result }}
+{% endif %}
 {% endblock %}
