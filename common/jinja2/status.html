@@ -8,14 +8,17 @@
   <tr>
     <th>類型</th>
     <th>數量</th>
+    <th>更新時間</th>
   </tr>
   <tr>
     <td>系所</td>
     <td>{{ department_count }}</td>
+    <td>{{ localftime(meta.departments_updated) }}</td>
   </tr>
   <tr>
     <td>學期</td>
     <td>{{ semester_count }}</td>
+    <td>{{ localftime(semesters.latest().created) }}</td>
   </tr>
 </table>
 <h3>學期</h3>
@@ -30,7 +33,7 @@
   <tr>
     <td>{{ semester.name }}</td>
     <td>{{ semester.course_set.count() }}</td>
-    <td>{{ semester.created.strftime("%Y/%m/%d %H-%M-%S %Z") }}</td>
+    <td>{{ localftime(semester.created) }}</td>
     <td>{% if semester.ready %}就緒{% else %}更新中{% endif %}</td>
   </tr>
   {% else %}

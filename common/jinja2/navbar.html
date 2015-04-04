@@ -12,9 +12,10 @@
 
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">課程</a></li>
-        <li><a href="#">關於</a></li>
-        <li><a href="{{ url('status') }}">狀態</a></li>
+        {{ navli(url('index'), '課程', current=request.path) }}
+        {{ navli('', '預排', disabled=True) }}
+        {{ navli(url('status'), '狀態', current=request.path) }}
+        {{ navli('', '關於', disabled=True) }}
       </ul>
     </div>
   </div>

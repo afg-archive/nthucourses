@@ -1,6 +1,6 @@
 from django.views.generic.base import TemplateView
 
-from courses.models import Semester, Department, Course
+from courses.models import Semester, Department, Course, Meta
 
 
 class Index(TemplateView):
@@ -15,4 +15,5 @@ class Status(TemplateView):
             'department_count': Department.objects.count(),
             'semester_count': Semester.objects.count(),
             'semesters': Semester.objects.all(),
+            'meta': Meta.get(),
         }

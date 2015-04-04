@@ -1,7 +1,21 @@
 from django.db import models
+from django.utils import timezone
 
 
 TYPICAL_SIZE = 256
+
+
+class Meta(models.Model):
+    departments_updated = models.DateTimeField()
+
+    @classmethod
+    def get(cls):
+        if cls.objects.count():
+            return cls.objects.get()
+        else:
+            return cls.objects.create(
+                department_list_updated=timezone.now(),
+            )
 
 
 class Semester(models.Model):
@@ -14,6 +28,7 @@ class Semester(models.Model):
 
     class Meta:
         ordering = ('-year', '-section', '-created')
+        get_latest_by = 'created'
 
 
 class Department(models.Model):
