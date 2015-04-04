@@ -14,5 +14,5 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 # heroku version
-from dj_static import Cling
-application = Cling(application)
+# from dj_static import Cling
+# application = Cling(application)

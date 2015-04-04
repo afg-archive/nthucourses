@@ -287,6 +287,8 @@ $ git push</pre>
     start_response(status, response_headers)
     return [response_body.encode('utf-8') ]
 
+from nthucourses.wsgi import application
+
 #
 # Below for testing only
 #
