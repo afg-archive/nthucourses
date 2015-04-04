@@ -75,10 +75,9 @@ WSGI_APPLICATION = 'nthucourses.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': 'squid.dlinkddns.com',
         'NAME': 'nthucourses',
-        'USER': 'nthucourses',
-        'PASSWORD': 'fj90fiewvodj210deij',
+        'USER': 'admindp2fqt2',
+        'PASSWORD': 'Swh4DekZr8Ba',
     }
 }
 
