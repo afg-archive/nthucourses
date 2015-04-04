@@ -14,7 +14,7 @@ class Meta(models.Model):
             return cls.objects.get()
         else:
             return cls.objects.create(
-                department_list_updated=timezone.now(),
+                departments_updated=timezone.now(),
             )
 
 
