@@ -73,3 +73,11 @@ class Course(models.Model):
 
     def __str__(self):
         return self.no
+
+    def todict(self):
+        fields = (
+            'no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity',
+            'teacher', 'size_limit', 'freshmen_reserved', 'note', 'enrollment', 'object',
+            'prerequisite', 'required_by', 'syllabus_text', 'syllabus_attachment',
+        )
+        return {field: getattr(self, field) for field in fields}

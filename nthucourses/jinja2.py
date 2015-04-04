@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.urlresolvers import reverse
 from django.utils.html import format_html, mark_safe
@@ -43,5 +45,6 @@ def environment(**options):
         'localtime': localtime,
         'localftime': localftime,
         'render_form': safe_rendering(render_form),
+        'json': safe_rendering(json.dumps),
     })
     return env

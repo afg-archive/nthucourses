@@ -6,10 +6,12 @@ from courses.models import Semester, Department
 
 class Result(dict):
     def __init__(self, semester, departments):
-        self['semester'] = Semester.objects.get(value=semester, ready=True)
-        self['departments'] = Department.objects.get(abbr=departments)
-        self['courses'] = self['semester'].course_set.filter(
-            departments=self['departments'])
+        semester = Semester.objects.get(value=semester, ready=True)
+        departments = Department.objects.get(abbr=departments)
+        courses = semester.course_set.filter(departments=departments)
+        self['semester'] = semester.name
+        self['departments'] = departments.name_zh
+        self['courses'] = [course.todict() for course in courses]
 
 
 class Course(TemplateView):

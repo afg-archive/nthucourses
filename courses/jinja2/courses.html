@@ -12,6 +12,38 @@
 </form>
 {% if result %}
 <hr>
-{{ result }}
+<table class="table" id="results">
+  <thead>
+    <tr>
+      <th>科號</th>
+      <th>名稱</th>
+      <th>教師</th>
+      <th>時段</th>
+      <th>人數</th>
+      <th>教室</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block endbody %}
+{% if result %}
+<script>
+  var result = {{ json(result) }};
+  var table = d3.select("#results tbody");
+  for (var i = 0; i != result.courses.length; ++ i) {
+    var tr = table.append('tr');
+    var course = result.courses[i];
+    console.log(course);
+    tr.append('td').text(course.no);
+    tr.append('td').text(course.title_zh);
+    tr.append('td').text(course.teacher);
+    tr.append('td').text(course.time);
+    tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
+    tr.append('td').text(course.room);
+  }
+</script>
 {% endif %}
 {% endblock %}
