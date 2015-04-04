@@ -30,6 +30,9 @@ class Semester(models.Model):
         ordering = ('-year', '-section', '-created')
         get_latest_by = 'created'
 
+    def __str__(self):
+        return self.value
+
 
 class Department(models.Model):
     abbr = models.CharField(max_length=4)

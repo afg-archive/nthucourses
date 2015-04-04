@@ -6,8 +6,8 @@ from courses.models import Semester, Department
 
 class Result(dict):
     def __init__(self, semester, departments):
-        self['semester'] = Semester.objects.get(pk=semester)
-        self['departments'] = Department.objects.get(pk=departments)
+        self['semester'] = Semester.objects.get(value=semester, ready=True)
+        self['departments'] = Department.objects.get(abbr=departments)
         self['courses'] = self['semester'].course_set.filter(
             departments=self['departments'])
 

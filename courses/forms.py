@@ -6,7 +6,7 @@ from courses.models import Semester, Department
 class CourseForm(forms.Form):
     semester = forms.ChoiceField(
         choices=[
-            (semester.pk, semester.name)
+            (semester.value, semester.name)
             for semester in Semester.objects.filter(ready=True)
         ]
     )
@@ -14,7 +14,7 @@ class CourseForm(forms.Form):
     departments = forms.ChoiceField(
         choices=[
             (
-                department.pk,
+                department.abbr,
                 '{} {}'.format(department.abbr, department.name_zh)
             )
             for department in Department.objects.all()
