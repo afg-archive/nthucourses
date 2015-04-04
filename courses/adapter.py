@@ -1,8 +1,10 @@
-from courses.models import Semester, Department
+from courses.models import Semester, Department, Course
 from ccxp.fetch import Browser
 
 
-def update_departments():
+def update_departments(browser=None):
+    if browser is None:
+        browser = Browser()
     new = update = 0
     for department in Browser().get_departments():
         if Department.objects.filter(abbr=department['abbr']).exists():
@@ -14,6 +16,7 @@ def update_departments():
             Department.objects.create(**department)
             new += 1
     print(new, 'departments created,', update, 'updated.')
+    return browser
 
 
 def update_semester(browser=None, semester_code=None):
@@ -44,6 +47,18 @@ def update_semester(browser=None, semester_code=None):
             semester.course_set.create(**course)
             print('Updating courses', '...', n, end='\r')
         print()
+        for n, (department, course_nos) in enumerate(departments.items()):
+            courses = semester.course_set.filter(no__in=course_nos)
+            ThroughModel = Course.departments.through
+            ThroughModel.objects.bulk_create(
+                ThroughModel(
+                    department=Department.objects.get(abbr=department),
+                    course=course,
+                )
+                for course in courses
+            )
+            print('Updating department data', '...', n, end='\r')
+        print()
         semester.ready = True
         semester.save()
     except:
@@ -53,3 +68,4 @@ def update_semester(browser=None, semester_code=None):
         Semester.objects.filter(
             value=semester.value).exclude(
             pk=semester.pk).delete()
+    return browser
