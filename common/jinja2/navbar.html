@@ -17,6 +17,13 @@
         {{ navli(url('status'), '狀態', current=request.path) }}
         {{ navli(url('about'), '關於', current=request.path) }}
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if request.user.is_authenticated() %}
+        <li><a>{{ request.user }}</a></li>
+        {% else %}
+        <li><a>未登入</a></li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 </nav>
