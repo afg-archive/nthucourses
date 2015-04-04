@@ -29,9 +29,9 @@
   {% for semester in semesters %}
   <tr>
     <td>{{ semester.name }}</td>
-    <td>{{ semester.updated }}</td>
     <td>{{ semester.course_set.count() }}</td>
-    <td>{% if semester.ready %}更新完成{% else %}更新中{% endif %}</td>
+    <td>{{ semester.created.strftime("%Y/%m/%d %H-%M-%S %Z") }}</td>
+    <td>{% if semester.ready %}就緒{% else %}更新中{% endif %}</td>
   </tr>
   {% else %}
   <tr>

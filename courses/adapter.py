@@ -16,11 +16,15 @@ def update_departments():
     print(new, 'departments created,', update, 'updated.')
 
 
-def update_semester(semester_code):
-    browser = Browser()
-    update_departments()
-    print(browser.get_captcha_url())
-    browser.set_captcha(input('Input captcha from above url: '))
+def update_semester(browser=None, semester_code=None):
+    if browser is None:
+        browser = Browser()
+        print(browser.get_captcha_url())
+        browser.set_captcha(input('Input captcha from above url: '))
+    if semester_code is not None:
+        browser.set_semester(semester_code)
+    browser_semester = browser.get_current_semester()
+    print(browser_semester)
     departments = dict()
     courses = dict()
     for department in Department.objects.all():
@@ -34,3 +38,18 @@ def update_semester(semester_code):
             len(courses),
             end='\r')
     print()
+    semester = Semester.objects.create(**browser_semester)
+    try:
+        for n, course in enumerate(courses.values()):
+            semester.course_set.create(**course)
+            print('Updating courses', '...', n, end='\r')
+        print()
+        semester.ready = True
+        semester.save()
+    except:
+        semester.delete()
+        raise
+    else:
+        Semester.objects.filter(
+            value=semester.value).exclude(
+            pk=semester.pk).delete()

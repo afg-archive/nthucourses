@@ -36,8 +36,18 @@ class Browser:
             in select.xpath('option')
             if option.attrib.get('value')]
 
+    def set_semester(self, semester):
+        select = self.xpath1('//*[@id="YS_id"]')
+        select.value = semester
+
     def get_semesters(self):
         return self.handle_select(Semester, '//*[@id="YS_id"]')
+
+    def get_current_semester(self):
+        select = self.xpath1('//*[@id="YS_id"]')
+        for semester in self.get_semesters():
+            if select.value == semester['value']:
+                return semester
 
     def get_departments(self):
         return self.handle_select(
