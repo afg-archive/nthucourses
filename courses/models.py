@@ -20,7 +20,7 @@ class Meta(models.Model):
 
 class Semester(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    value = models.CharField(max_length=6)
+    value = models.CharField(max_length=6, db_index=True)
     year = models.IntegerField()
     section = models.IntegerField()
     name = models.CharField(max_length=TYPICAL_SIZE)
@@ -35,7 +35,7 @@ class Semester(models.Model):
 
 
 class Department(models.Model):
-    abbr = models.CharField(max_length=4)
+    abbr = models.CharField(max_length=4, db_index=True)
     name_zh = models.CharField(max_length=TYPICAL_SIZE)
     name_en = models.CharField(max_length=TYPICAL_SIZE)
 
@@ -47,9 +47,9 @@ class Department(models.Model):
 
 
 class Course(models.Model):
-    semester = models.ForeignKey(Semester)
-    departments = models.ManyToManyField(Department)
-    no = models.CharField(max_length=15)
+    semester = models.ForeignKey(Semester, db_index=True)
+    departments = models.ManyToManyField(Department, db_index=True)
+    no = models.CharField(max_length=15, db_index=True)
     title_zh = models.CharField(max_length=TYPICAL_SIZE)
     title_en = models.CharField(max_length=TYPICAL_SIZE)
     ge_line = models.CharField(max_length=TYPICAL_SIZE)
