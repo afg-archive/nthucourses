@@ -17,3 +17,7 @@ class Status(TemplateView):
             'semesters': Semester.objects.all(),
             'meta': Meta.get(),
         }
+
+
+class About(TemplateView):
+    template_name = 'about.html'

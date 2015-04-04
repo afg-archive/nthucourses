@@ -15,7 +15,7 @@
         {{ navli(url('index'), '課程', current=request.path) }}
         {{ navli('', '預排', disabled=True) }}
         {{ navli(url('status'), '狀態', current=request.path) }}
-        {{ navli('', '關於', disabled=True) }}
+        {{ navli(url('about'), '關於', current=request.path) }}
       </ul>
     </div>
   </div>
