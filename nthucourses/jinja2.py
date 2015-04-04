@@ -19,9 +19,9 @@ def navli(url, display, active=False, current=None, disabled=False):
     if disabled:
         classes.append('disabled')
     return format_html(
-        '<li class="{classes}"><a href="{url}">{display}</a></li>',
+        '<li class="{classes}"><a{url}>{display}</a></li>',
         classes=' '.join(classes),
-        url=url,
+        url=format_html(' href="{}"', url) if url else '',
         display=display,
     )
 
