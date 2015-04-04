@@ -1,5 +1,5 @@
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
         <span class="sr-only">Toggle navigation</span>
@@ -12,7 +12,7 @@
 
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="nav navbar-nav">
-        {{ navli(url('index'), '課程', current=request.path) }}
+        {{ navli(url('courses'), '課程', current=request.path) }}
         {{ navli('', '預排', disabled=True) }}
         {{ navli(url('status'), '狀態', current=request.path) }}
         {{ navli(url('about'), '關於', current=request.path) }}

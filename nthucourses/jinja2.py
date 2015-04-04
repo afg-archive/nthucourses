@@ -1,9 +1,11 @@
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.urlresolvers import reverse
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.utils.timezone import localtime
 
 from jinja2 import Environment
+
+from bootstrap3.forms import render_form
 
 
 def navli(url, display, active=False, current=None, disabled=False):
@@ -26,6 +28,12 @@ def localftime(time):
     return localtime(time).strftime('%Y/%m/%d %H:%M:%S')
 
 
+def safe_rendering(renderer):
+    def safe_renderer(*args, **kwargs):
+        return mark_safe(renderer(*args, **kwargs))
+    return safe_renderer
+
+
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
@@ -34,5 +42,6 @@ def environment(**options):
         'navli': navli,
         'localtime': localtime,
         'localftime': localftime,
+        'render_form': safe_rendering(render_form),
     })
     return env
