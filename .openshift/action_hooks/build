@@ -3,5 +3,5 @@
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 cd $OPENSHIFT_REPO_DIR
 
-pip install -r requirements.txt
+pip install -r requires.txt
 ./manage.py migrate
