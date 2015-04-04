@@ -99,6 +99,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Social Auth Namespace
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
 
 # heroku stuff #
 
