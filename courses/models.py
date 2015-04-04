@@ -41,6 +41,7 @@ class Course(models.Model):
     capacity = models.IntegerField(null=True)
     teacher = models.CharField(max_length=TYPICAL_SIZE)
     size_limit = models.IntegerField(null=True)
+    freshmen_reserved = models.IntegerField(null=True)
     note = models.TextField()
     enrollment = models.IntegerField()
     object = models.CharField(max_length=TYPICAL_SIZE)
