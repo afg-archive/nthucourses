@@ -18,7 +18,7 @@
   <tr>
     <td>學期</td>
     <td>{{ semester_count }}</td>
-    <td>{{ localftime(semesters.latest().created) }}</td>
+    <td>{% if semester_count %}{{ localftime(semesters.latest().created) }}{% endif %}</td>
   </tr>
 </table>
 <h3>學期</h3>
