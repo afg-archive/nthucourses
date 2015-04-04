@@ -87,10 +87,3 @@ class Browser:
         values = form.form_values() + [('cond', 'a')]
         url = form.action
         return self.session.post(url, data=values)
-
-
-if __name__ == '__main__':
-    import pprint
-    browser = Browser()
-    browser.set_captcha(decaptcha(browser.get_captcha_url()))
-    print(browser.get_courses_by_department('GE'))
