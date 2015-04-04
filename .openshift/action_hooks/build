@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-ource $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
+source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 cd $OPENSHIFT_REPO_DIR
 
 pip install -r requirements.txt
