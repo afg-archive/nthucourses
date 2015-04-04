@@ -18,6 +18,9 @@ class Department(models.Model):
     name_zh = models.CharField(max_length=TYPICAL_SIZE)
     name_en = models.CharField(max_length=TYPICAL_SIZE)
 
+    def __str__(self):
+        return self.abbr
+
 
 class Course(models.Model):
     semester = models.ForeignKey(Semester)
@@ -39,3 +42,6 @@ class Course(models.Model):
     required_by = models.CharField(max_length=TYPICAL_SIZE)  # TODO
     syllabus_text = models.TextField()
     syllabus_attachment = None  # TODO
+
+    def __str__(self):
+        return self.no
