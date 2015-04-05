@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gt5b_sr2w7yio_j3)u5$^)z@go78_)&)afpv0m-yfrcmv-zv*)'
+SECRET_KEY = os.environ['OPENSHIFT_SECRET_TOKEN']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,8 +76,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nthucourses',
-        'USER': 'admindp2fqt2',
-        'PASSWORD': 'Swh4DekZr8Ba',
+        'USER': os.environ['OPENSHIFT_POSTGRESQL_DB_USERNAME'],
+        'PASSWORD': os.environ['OPENSHIFT_POSTGRESQL_DB_PASSWORD'],
     }
 }
 
