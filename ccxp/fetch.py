@@ -8,7 +8,7 @@ from ccxp.data import Semester, Department, Course, Syllabus, xpath1
 
 index_url = 'https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/6/6.2/6.2.9/JH629001.php'  # noqa
 syllabus_url = 'https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/common/Syllabus/1.php'  # noqa
-encoding = 'big5'
+encoding = 'cp950'
 
 
 class Browser:
@@ -98,7 +98,7 @@ class Browser:
         return response.text
 
     def get_syllabus(self, course):
-        return Syllabus(from_string(self.get_sullabus_html(course)))
+        return Syllabus(fromstring(self.get_syllabus_html(course)))
 
     def freeze(self):
         return {

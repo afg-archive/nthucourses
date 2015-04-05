@@ -78,7 +78,7 @@ class Course(models.Model):
     object = models.CharField(max_length=TYPICAL_SIZE)
     prerequisite = models.CharField(max_length=TYPICAL_SIZE)  # TODO
     required_by = models.CharField(max_length=TYPICAL_SIZE)  # TODO
-    syllabus_text = models.TextField()
+    syllabus = models.TextField()
     syllabus_attachment = None  # TODO
 
     class Meta:
@@ -88,5 +88,5 @@ class Course(models.Model):
         return self.no
 
     def todict(self):
-        fields = ('no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'note', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus_text', 'syllabus_attachment')  # NOQA
+        fields = ('no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'note', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
         return {field: getattr(self, field) for field in fields}

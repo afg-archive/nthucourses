@@ -84,30 +84,22 @@ class Course(dict):
 class Syllabus(dict):
     syllabus_pattern = re.compile(r'\n{4,}')
     def __init__(self, document):
-        self['no'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[2]/td[2]').text
-        self['credit'] = int(xpath1(
-            document,
-            '/html/body/div/table[1]/tr[2]/td[4]').text)
-        self['title_zh'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[3]/td[2]').text.strip()
-        self['title_en'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[4]/td[2]').text.strip()
-        self['teacher'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[5]/td[2]').text.strip()
-        self['time'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[6]/td[2]').text.strip()
-        self['room'] = xpath1(
-            document,
-            '/html/body/div/table[1]/tr[6]/td[4]').text.strip()
-        syllabus = extract_multirow(xpath1(
-            document,
-            '/html/body/div/table[4]/tr[2]/td'))
+        def gettext(xpath):
+            return xpath1(document, xpath).text or ''
+        def getint(xpath):
+            xres = xpath1(document, xpath).text
+            if xres is None:
+                return None
+            else:
+                return int(xres)
+        self['no'] = gettext('/html/body/div/table[1]/tr[2]/td[2]')
+        self['credit'] = getint('/html/body/div/table[1]/tr[2]/td[4]')
+        self['title_zh'] = gettext('/html/body/div/table[1]/tr[3]/td[2]')
+        self['title_en'] = gettext('/html/body/div/table[1]/tr[4]/td[2]')
+        self['teacher'] = gettext('/html/body/div/table[1]/tr[5]/td[2]')
+        self['time'] = gettext('/html/body/div/table[1]/tr[6]/td[2]')
+        self['room'] = gettext('/html/body/div/table[1]/tr[6]/td[4]')
+        syllabus = gettext('/html/body/div/table[4]/tr[2]/td')
         self['syllabus'] = self.syllabus_pattern.sub(
             '\n\n\n',
             '\n'.join(syllabus))

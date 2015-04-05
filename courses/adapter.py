@@ -1,3 +1,5 @@
+import operator
+
 from courses.models import Semester, Department, Course
 from ccxp.fetch import Browser
 
@@ -63,6 +65,16 @@ def update_semester(browser=None, semester_code=None):
             '...',
             len(courses),
             end='\r')
+    print()
+    for n, course in enumerate(courses.values()):
+        syllabus_data = browser.get_syllabus(course['no'])
+        course.update(filter(operator.itemgetter(1), syllabus_data.items()))
+        print(
+            'Collecting syllabus from',
+            course['no'],
+            '...',
+            n,
+            end='\n') #TODO
     print()
     semester_entry = semester.semesterentry_set.create()
     try:
