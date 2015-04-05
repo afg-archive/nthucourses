@@ -99,7 +99,8 @@ class Syllabus(dict):
         self['teacher'] = gettext('/html/body/div/table[1]/tr[5]/td[2]')
         self['time'] = gettext('/html/body/div/table[1]/tr[6]/td[2]')
         self['room'] = gettext('/html/body/div/table[1]/tr[6]/td[4]')
-        syllabus = gettext('/html/body/div/table[4]/tr[2]/td')
+        syllabus = extract_multirow(
+            xpath1(document, '/html/body/div/table[4]/tr[2]/td'))
         self['syllabus'] = self.syllabus_pattern.sub(
             '\n\n\n',
             '\n'.join(syllabus))
