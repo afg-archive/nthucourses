@@ -41,6 +41,9 @@ class SemesterEntry(models.Model):
     class Meta:
         ordering = ('semester',)
 
+    def __str__(self):
+        return '{}, {}'.format(self.semester.value, self.created)
+
 
 class Department(models.Model):
     abbr = models.CharField(max_length=4, db_index=True)
