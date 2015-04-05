@@ -3,57 +3,63 @@
 {% block title %}狀態{% endblock %}
 
 {% block content %}
-<h3>統計</h3>
 <table class="table">
-  <tr>
-    <th>類型</th>
-    <th>數量</th>
-    <th>更新時間</th>
-  </tr>
-  <tr>
-    <td>系所</td>
-    <td>{{ Department.objects.count() }}</td>
-    <td>{% if Department.objects.exists() %}{{ localftime(Department.objects.latest().updated) }}{% else %}-{% endif %}</td>
-  </tr>
-  <tr>
-    <td>學期</td>
-    <td>{{ Semester.objects.count() }}</td>
-    <td>{% if Semester.objects.exists() %}{{ localftime(Semester.objects.latest().updated) }}{% else %}-{% endif %}</td>
-  </tr>
+  <thead>
+    <tr>
+      <th>類型</th>
+      <th>數量</th>
+      <th>更新時間</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>系所</td>
+      <td>{{ Department.objects.count() }}</td>
+      <td>{% if Department.objects.exists() %}{{ localftime(Department.objects.latest().updated) }}{% else %}-{% endif %}</td>
+    </tr>
+    <tr>
+      <td>學期</td>
+      <td>{{ Semester.objects.count() }}</td>
+      <td>{% if Semester.objects.exists() %}{{ localftime(Semester.objects.latest().updated) }}{% else %}-{% endif %}</td>
+    </tr>
+  </tbody>
 </table>
-<h3>學期</h3>
 <table class="table">
-  <tr>
-    <th>學期</th>
-    <th>狀態</th>
-    <th>課程數量</th>
-    <th>更新時間</th>
-  </tr>
-  {% for semester in Semester.objects.all() %}
-  {% for semester_entry in semester.semesterentry_set.all() %}
-  <tr{% if not semester_entry.ready %} class="text-warning"{% endif %}>
-    <td>{{ semester.name }}</td>
-    {% if semester_entry.ready %}
-    <td>就緒</td>
-    {% else %}
-    <td>更新中</td>
-    {% endif %}
-    <td>{{ semester_entry.course_set.count() }}</td>
-    <td>{{ localftime(semester_entry.created) }}</td>
-  </tr>
-    {% else %}
-  <tr class="text-muted">
-    <td>{{ semester.name }}</td>
-    <td>無資料</td>
-    {% for i in range(2) %}
-    <td>-</td>
+  <thead>
+    <tr>
+      <th>學期</th>
+      <th>狀態</th>
+      <th>課程數量</th>
+      <th>更新時間</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for semester in Semester.objects.all() %}
+    {% for semester_entry in semester.semesterentry_set.all() %}
+    <tr{% if not semester_entry.ready %} class="text-warning"{% endif %}>
+      <td>{{ semester.name }}</td>
+      {% if semester_entry.ready %}
+      <td>就緒</td>
+      {% else %}
+      <td>更新中</td>
+      {% endif %}
+      <td>{{ semester_entry.course_set.count() }}</td>
+      <td>{{ localftime(semester_entry.created) }}</td>
+    </tr>
+      {% else %}
+    <tr class="text-muted">
+      <td>{{ semester.name }}</td>
+      <td>無資料</td>
+      {% for i in range(2) %}
+      <td>-</td>
+      {% endfor %}
+    </tr>
     {% endfor %}
-  </tr>
-  {% endfor %}
-  {% else %}
-  <tr>
-    <td colspan="4">無資料</td>
-  </tr>
-  {% endfor %}
+    {% else %}
+    <tr>
+      <td colspan="4">無資料</td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
