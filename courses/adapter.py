@@ -2,11 +2,18 @@ from courses.models import Semester, Department, Course
 from ccxp.fetch import Browser
 
 
+def get_browser(browser=None):
+    if browser is None:
+        browser = Browser()
+        print(browser.get_captcha_url())
+        browser.set_captcha(input('Input captcha from above url: '))
+
+
 def update_departments(browser=None):
     if browser is None:
         browser = Browser()
     new = update = 0
-    for department in Browser().get_departments():
+    for department in browser.get_departments():
         if Department.objects.filter(abbr=department['abbr']).exists():
             dbdep = Department.objects.get(abbr=department['abbr'])
             dbdep.name_zh = department['name_zh']
@@ -16,18 +23,33 @@ def update_departments(browser=None):
             Department.objects.create(**department)
             new += 1
     print(new, 'departments created,', update, 'updated.')
-    return browser
+
+
+def update_semesters(browser=None):
+    if browser is None:
+        browser = Browser()
+    new = update = 0
+    for semester in browser.get_semesters():
+        if Semester.objects.filter(value=semester['value']).exists():
+            dbsem = Semester.objects.get(value=semester.pop('value'))
+            for key, value in semester.items():
+                setattr(dbsem, key, value)
+            update += 1
+        else:
+            Semester.objects.create(**semester)
+            new += 1
+    print(new, 'semesters created,', update, 'updated.')
 
 
 def update_semester(browser=None, semester_code=None):
-    if browser is None:
-        browser = Browser()
-        print(browser.get_captcha_url())
-        browser.set_captcha(input('Input captcha from above url: '))
+    browser = get_browser(browser)
+    update_departments(browser)
+    update_semesters(browser)
     if semester_code is not None:
         browser.set_semester(semester_code)
     browser_semester = browser.get_current_semester()
     print(browser_semester)
+    semester = Semester.objects.get(value=semester_code)
     departments = dict()
     courses = dict()
     for department in Department.objects.all():
@@ -41,14 +63,14 @@ def update_semester(browser=None, semester_code=None):
             len(courses),
             end='\r')
     print()
-    semester = Semester.objects.create(**browser_semester)
+    semester_entry = semester.semesterentry_set.create()
     try:
         for n, course in enumerate(courses.values()):
-            semester.course_set.create(**course)
+            semester_entry.course_set.create(**course)
             print('Updating courses', '...', n, end='\r')
         print()
         for n, (department, course_nos) in enumerate(departments.items()):
-            courses = semester.course_set.filter(no__in=course_nos)
+            courses = semester_entry.course_set.filter(no__in=course_nos)
             ThroughModel = Course.departments.through
             ThroughModel.objects.bulk_create(
                 ThroughModel(
@@ -59,13 +81,13 @@ def update_semester(browser=None, semester_code=None):
             )
             print('Updating department data', '...', n, end='\r')
         print()
-        semester.ready = True
-        semester.save()
+        semester_entry.ready = True
+        semester_entry.save()
     except:
-        semester.delete()
+        semester_entry.delete()
         raise
     else:
-        Semester.objects.filter(
-            value=semester.value).exclude(
-            pk=semester.pk).delete()
+        semester.semesterentry_set.filter(
+            semester=semester).exclude(
+            pk=semester_entry.pk).delete()
     return browser
