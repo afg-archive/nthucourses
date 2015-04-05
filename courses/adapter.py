@@ -7,6 +7,7 @@ def get_browser(browser=None):
         browser = Browser()
         print(browser.get_captcha_url())
         browser.set_captcha(input('Input captcha from above url: '))
+    return browser
 
 
 def update_departments(browser=None):
@@ -44,12 +45,12 @@ def update_semesters(browser=None):
 def update_semester(browser=None, semester_code=None):
     browser = get_browser(browser)
     update_departments(browser)
-    update_semesters(browser)
     if semester_code is not None:
         browser.set_semester(semester_code)
+        update_semesters(browser)
     browser_semester = browser.get_current_semester()
     print(browser_semester)
-    semester = Semester.objects.get(value=semester_code)
+    semester = Semester.objects.get(value=browser_semester['value'])
     departments = dict()
     courses = dict()
     for department in Department.objects.all():

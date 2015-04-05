@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView, RedirectView
 
-from courses.models import Semester, Department, Course, Meta
+from courses.models import Semester, Department
 
 
 class Index(RedirectView):
@@ -16,10 +16,8 @@ class Status(TemplateView):
 
     def get_context_data(self):
         return {
-            'department_count': Department.objects.count(),
-            'semester_count': Semester.objects.count(),
-            'semesters': Semester.objects.all(),
-            'meta': Meta.get(),
+            'Department': Department,
+            'Semester': Semester,
         }
 
 
