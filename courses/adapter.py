@@ -74,7 +74,7 @@ def update_semester(browser=None, semester_code=None):
             course['no'],
             '...',
             n,
-            end='\n') #TODO
+            end='\r')
     print()
     semester_entry = semester.semesterentry_set.create()
     try:
