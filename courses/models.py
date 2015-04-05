@@ -38,6 +38,9 @@ class SemesterEntry(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     ready = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ('semester',)
+
 
 class Department(models.Model):
     abbr = models.CharField(max_length=4, db_index=True)
