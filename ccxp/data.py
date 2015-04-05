@@ -1,3 +1,12 @@
+import re
+
+
+def xpath1(element, xpath):
+    result = element.xpath(xpath)
+    assert len(result) == 1, 'got %d elements from %s' % (len(element), xpath)
+    return result[0]
+
+
 def extract_div(element):
     result = element.xpath('div')
     assert len(result) == 1
@@ -70,3 +79,35 @@ class Course(dict):
         self['object'] = extract_div(tds[9])
         self['prerequisite'] = extract_div(tds[10])
         self['required_by'] = extract_div(footer.xpath('td')[0])
+
+
+class Syllabus(dict):
+    syllabus_pattern = re.compile(r'\n{4,}')
+    def __init__(self, document):
+        self['no'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[2]/td[2]').text
+        self['credit'] = int(xpath1(
+            document,
+            '/html/body/div/table[1]/tr[2]/td[4]').text)
+        self['title_zh'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[3]/td[2]').text.strip()
+        self['title_en'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[4]/td[2]').text.strip()
+        self['teacher'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[5]/td[2]').text.strip()
+        self['time'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[6]/td[2]').text.strip()
+        self['room'] = xpath1(
+            document,
+            '/html/body/div/table[1]/tr[6]/td[4]').text.strip()
+        syllabus = extract_multirow(xpath1(
+            document,
+            '/html/body/div/table[4]/tr[2]/td'))
+        self['syllabus'] = self.syllabus_pattern.sub(
+            '\n\n\n',
+            '\n'.join(syllabus))

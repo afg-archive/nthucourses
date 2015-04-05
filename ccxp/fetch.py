@@ -3,18 +3,12 @@ from urllib.parse import urljoin
 import requests
 from lxml.html import fromstring
 
-from ccxp.data import Semester, Department, Course
+from ccxp.data import Semester, Department, Course, Syllabus, xpath1
 
 
 index_url = 'https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/6/6.2/6.2.9/JH629001.php'  # noqa
 syllabus_url = 'https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/common/Syllabus/1.php'  # noqa
 encoding = 'big5'
-
-
-def xpath1(element, xpath):
-    result = element.xpath(xpath)
-    assert len(result) == 1, 'got %d elements from %s' % (len(element), xpath)
-    return result[0]
 
 
 class Browser:
@@ -95,14 +89,16 @@ class Browser:
         url = form.action
         return self.session.post(url, data=values)
 
-    def get_syllabus(self, course):
+    def get_syllabus_html(self, course):
         response = self.session.get(
             syllabus_url,
             params=dict(ACIXSTORE=self.ACIXSTORE.value, c_key=course)
         )
         response.encoding = encoding
-        document = fromstring(response.text)
-        return document
+        return response.text
+
+    def get_syllabus(self, course):
+        return Syllabus(from_string(self.get_sullabus_html(course)))
 
     def freeze(self):
         return {
