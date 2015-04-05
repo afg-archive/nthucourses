@@ -17,7 +17,7 @@ class Result(dict):
         self['courses'] = [course.todict() for course in courses]
 
 
-class Course(TemplateView):
+class Curriculum(TemplateView):
     template_name = 'courses.html'
     form_class = CourseForm
 
