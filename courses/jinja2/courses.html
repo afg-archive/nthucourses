@@ -90,8 +90,8 @@ th.notes {
     var course = result.courses[i];
     console.log(course);
     tr.append('td').text(course.no);
-    tr.append('td')
-      .append('a')
+    var title = tr.append('td');
+    title.append('div').append('a')
       .attr({
         'href': '#syllabusModal',
         'data-toggle': 'modal',
@@ -99,6 +99,13 @@ th.notes {
         'data-index': i
       })
       .text(course.title_zh);
+    if (course.ge_line) {
+      title.append('div')
+        .attr({
+          'class': 'ge_line'
+        })
+        .text(course.ge_line);
+    }
     tr.append('td').text(course.teacher);
     tr.append('td').text(course.time);
     tr.append('td').text(course.credit);
