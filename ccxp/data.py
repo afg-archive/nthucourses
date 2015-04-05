@@ -74,7 +74,7 @@ class Course(dict):
             self['size_limit'] = int(size_limit_str)
         else:
             self['size_limit'] = self['freshmen_reserved'] = None
-        self['note'] = '\n'.join(filter(None, extract_multirow(tds[7])))
+        self['notes'] = '\n'.join(filter(None, extract_multirow(tds[7])))
         self['enrollment'] = int(extract_div(tds[8]))
         self['object'] = extract_div(tds[9])
         self['prerequisite'] = extract_div(tds[10])
