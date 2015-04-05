@@ -1,14 +1,6 @@
-from django.core.urlresolvers import reverse
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import TemplateView
 
 from courses.models import Semester, Department
-
-
-class Index(RedirectView):
-    permanent = False
-
-    def get_redirect_url(self):
-        return reverse('courses')
 
 
 class Status(TemplateView):

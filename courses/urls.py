@@ -4,5 +4,5 @@ from courses import views
 
 
 urlpatterns = patterns('',
-    url(r'^courses/$', views.Course.as_view(), name='courses'),
+    url(r'^$', views.Course.as_view(), name='courses'),
 )
