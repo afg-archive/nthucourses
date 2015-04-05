@@ -60,6 +60,7 @@
       <th>學分</th>
       <th>人數</th>
       <th>教室</th>
+      <th>備註</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -91,6 +92,7 @@
     tr.append('td').text(course.credit);
     tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
     tr.append('td').text(course.room);
+    tr.append('td').text(course.notes);
   }
   $('#syllabusModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
