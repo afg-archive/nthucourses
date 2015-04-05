@@ -1,14 +1,15 @@
 from django.views.generic.base import TemplateView
 
 from courses.forms import CourseForm
-from courses.models import Semester, Department
+from courses.models import Semester, SemesterEntry, Department
 
 
 class Result(dict):
     def __init__(self, semester, departments):
-        semester = Semester.objects.get(value=semester, ready=True)
+        entry = SemesterEntry.objects.get(semester__value=semester)
+        semester = entry.semester
         departments = Department.objects.get(abbr=departments)
-        courses = semester.course_set.filter(departments=departments)
+        courses = entry.course_set.filter(departments=departments)
         self['semester'] = semester.name
         self['departments'] = departments.name_zh
         self['courses'] = [course.todict() for course in courses]
