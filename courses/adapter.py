@@ -66,7 +66,7 @@ def update_semester(browser=None, semester_code=None):
             len(courses),
             end='\r')
     print()
-    for n, course in enumerate(courses.values()):
+    for n, course in enumerate(courses.values(), start=1):
         syllabus_data = browser.get_syllabus(course['no'])
         course.update(filter(operator.itemgetter(1), syllabus_data.items()))
         print(
@@ -78,7 +78,7 @@ def update_semester(browser=None, semester_code=None):
     print()
     semester_entry = semester.semesterentry_set.create()
     try:
-        for n, course in enumerate(courses.values()):
+        for n, course in enumerate(courses.values(), start=1):
             semester_entry.course_set.create(**course)
             print('Updating courses', '...', n, end='\r')
         print()
