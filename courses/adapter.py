@@ -104,3 +104,23 @@ def update_semester(browser=None, semester_code=None):
             semester=semester).exclude(
             pk=semester_entry.pk).delete()
     return browser
+
+
+def update_targets(semesters):
+    browser = get_browser()
+    update_departments(browser)
+    update_semesters(browser)
+    for semester in semesters:
+        update_semester(browser, semester.value)
+
+
+def get_viable_targets():
+    return Semester.objects.exclude(section=30)
+
+
+def update_latest():
+    update_targets(get_viable_targets()[:2])
+
+
+def update_recent():
+    update_targets(get_viable_targets()[:5])
