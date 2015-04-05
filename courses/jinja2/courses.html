@@ -62,6 +62,7 @@ th.notes {
 {% if result %}
 <hr>
 <table class="table" id="results">
+  <caption>{{ result.courses.__len__() }} 個搜尋結果，資料更新於：{{ localftime(result.updated) }}</caption>
   <thead>
     <tr>
       <th>科號</th>

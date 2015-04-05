@@ -15,6 +15,7 @@ class Result(dict):
         self['semester'] = semester.name
         self['departments'] = departments.name_zh
         self['courses'] = [course.todict() for course in courses]
+        self.updated = entry.created  # not json serializable
 
 
 class Curriculum(TemplateView):
