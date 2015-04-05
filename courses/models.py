@@ -73,7 +73,7 @@ class Course(models.Model):
     teacher = models.CharField(max_length=TYPICAL_SIZE)
     size_limit = models.IntegerField(null=True)
     freshmen_reserved = models.IntegerField(null=True)
-    note = models.TextField()
+    notes = models.TextField()
     enrollment = models.IntegerField()
     object = models.CharField(max_length=TYPICAL_SIZE)
     prerequisite = models.CharField(max_length=TYPICAL_SIZE)  # TODO
@@ -88,5 +88,5 @@ class Course(models.Model):
         return self.no
 
     def todict(self):
-        fields = ('no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'note', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
+        fields = ('no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
         return {field: getattr(self, field) for field in fields}
