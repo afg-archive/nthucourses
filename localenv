@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export DEBUG=DEBUG
 export OPENSHIFT_SECRET_TOKEN='gt5b_sr2w7yio_j3)u5$^)z@go78_)&)afpv0m-yfrcmv-zv*)'
 export OPENSHIFT_POSTGRESQL_DB_USERNAME=afg
 export OPENSHIFT_POSTGRESQL_DB_PASSWORD=
