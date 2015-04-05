@@ -2,6 +2,17 @@
 
 {% block title %}課程{% endblock %}
 
+{% block style %}
+{{ super() }}
+td.notes,
+th.notes {
+  width: 25%;
+}
+.notes {
+  white-space: pre-warp;
+}
+{% endblock %}
+
 {% block content %}
 <div class="modal" id="syllabusModal" tabindex="-1" role="dialog" aria-labelledby="syllabusModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -12,7 +23,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6 col-md-4">
             <p id="syllabus-no"></p>
             <p>
               <span id="syllabus-teacher"></span> -
@@ -25,10 +36,10 @@
               <span id="syllabus-credit"></span> 學分
             </p>
           </div>
-          <div class="col-sm-6">
-            <p id="syllabus-notes"></p>
+          <div class="col-sm-6 col-md-4">
+            <p id="syllabus-notes" class="notes"></p>
           </div>
-          <div class="col-sm-12">
+          <div class="col-md-12">
             <h4>Syllabus</h4>
             <pre id="syllabus-content"></pre>
           </div>
@@ -60,7 +71,7 @@
       <th>學分</th>
       <th>人數</th>
       <th>教室</th>
-      <th>備註</th>
+      <th class="notes">備註</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -92,7 +103,11 @@
     tr.append('td').text(course.credit);
     tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
     tr.append('td').text(course.room);
-    tr.append('td').text(course.notes);
+    tr.append('td')
+      .attr({
+        'class': 'notes'
+      })
+      .text(course.notes);
   }
   $('#syllabusModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
