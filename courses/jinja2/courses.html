@@ -75,7 +75,6 @@ th.notes {
       <th class="notes">備註</th>
     </tr>
   </thead>
-  <tbody></tbody>
 </table>
 {% endif %}
 {% endblock %}
@@ -84,7 +83,7 @@ th.notes {
 {% if result %}
 <script>
   var result = {{ json(result) }};
-  var table = d3.select("#results tbody");
+  var table = d3.select("#results").append('tbody');
   for (var i = 0; i != result.courses.length; ++ i) {
     var tr = table.append('tr');
     var course = result.courses[i];
