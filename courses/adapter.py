@@ -10,7 +10,7 @@ from ccxp.fetch import Browser
 def get_browser(browser=None):
     if browser is None:
         response = requests.post(
-            'http://afg984.koding.io/apis/ccxppair/',
+            'http://afg984.herokuapp.com/apis/ccxppair/',
             data=dict(
                 consumer_key='LN3VGmphaC6cwtfrwQzF37y8YDvhTskHEnfqdXYm'
             )
