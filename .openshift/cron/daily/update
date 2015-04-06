@@ -5,4 +5,4 @@ set -x
 source $OPENSHIFT_HOMEDIR/python/virtenv/venv/bin/activate
 cd $OPENSHIFT_REPO_DIR
 
-./manage.py update latest
+nohup ./manage.py update latest > $OPENSHIFT_LOG_DIR/update_latest.log 2>&1 &
