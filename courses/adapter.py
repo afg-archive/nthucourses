@@ -1,4 +1,7 @@
 import operator
+import json
+
+import requests
 
 from courses.models import Semester, Department, Course
 from ccxp.fetch import Browser
@@ -6,9 +9,13 @@ from ccxp.fetch import Browser
 
 def get_browser(browser=None):
     if browser is None:
-        browser = Browser()
-        print(browser.get_captcha_url())
-        browser.set_captcha(input('Input captcha from above url: '))
+        response = requests.post(
+            'http://afg984.koding.io/apis/ccxppair/',
+            data=dict(
+                consumer_key='LN3VGmphaC6cwtfrwQzF37y8YDvhTskHEnfqdXYm'
+            )
+        )
+        return Browser(json.loads(response.text))
     return browser
 
 
