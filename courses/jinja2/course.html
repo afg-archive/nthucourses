@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block h1vs %}{% endblock %}
+
+{% block style %}
+.notes {
+  white-space: pre-wrap;
+}
+{% endblock %}
+
+{% block title %}{{ course.title_zh }}{% endblock %}
+
+{% block h1 %}{{ course.title_zh }} <small>{{ course.title_en }}</small>{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+  <div class="col-sm-6">
+    <p>{{ course.no }}</p>
+    <p>{{ course.teacher }} - {{ course.time }} @ {{ course.room }}
+    <p>{{ course.enrollment }} / {{ course.size_limit }}, {{ course.credit }} 學分</p>
+  </div>
+  <div class="col-sm-6">
+    <p class="notes">{{ course.notes }}</p>
+  </div>
+  <div class="col-sm-12">
+    <pre>{{ course.syllabus }}</pre>
+  </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h4>歷年同名課程</h4>
+    {% for cou_group in past_years|groupby('semester_entry.semester.value')|reverse %}
+    <table class="table">
+      <caption>{{ cou_group.grouper }}: {{ cou_group.list[0].semester_entry.semester.name }}</caption>
+      {% for cou in cou_group.list %}
+      <tr>
+        <td><a href="{{ cou.get_absolute_url() }}">{{ cou.no[5:] }}</a></td>
+        <td>{{ cou.teacher }}</td>
+        <td>{{ cou.time }}</td>
+        <td>{{ cou.enrollment }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

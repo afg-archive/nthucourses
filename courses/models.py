@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 
 TYPICAL_SIZE = 256
@@ -16,7 +17,6 @@ class Meta(models.Model):
             return cls.objects.create(
                 departments_updated=timezone.now(),
             )
-
 
 class Semester(models.Model):
     value = models.CharField(max_length=6, db_index=True)
@@ -87,6 +87,9 @@ class Course(models.Model):
     def __str__(self):
         return self.no
 
+    def get_absolute_url(self):
+        return reverse('course', kwargs={'pk': self.pk})
+
     def todict(self):
-        fields = ('no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
+        fields = ('pk', 'no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
         return {field: getattr(self, field) for field in fields}
