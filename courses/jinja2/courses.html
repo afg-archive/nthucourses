@@ -87,7 +87,6 @@ th.notes {
   for (var i = 0; i != result.courses.length; ++ i) {
     var tr = table.append('tr');
     var course = result.courses[i];
-    console.log(course);
     tr.append('td').text(course.no);
     var title = tr.append('td');
     var titleline = title.append('div');
@@ -132,7 +131,6 @@ th.notes {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var index = button.data('index');
     var course = result.courses[index];
-    console.log(course);
     // var recipient = button.data('whatever') // Extract info from data-* attributes
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
