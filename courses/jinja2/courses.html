@@ -90,7 +90,8 @@ th.notes {
     console.log(course);
     tr.append('td').text(course.no);
     var title = tr.append('td');
-    title.append('div').append('a')
+    var titleline = title.append('div');
+    titleline.append('a')
       .attr({
         'href': '#syllabusModal',
         'data-toggle': 'modal',
@@ -98,6 +99,17 @@ th.notes {
         'data-index': i
       })
       .text(course.title_zh);
+    titleline.append('span').text(' ');
+    titleline.append('a')
+      .attr({
+        'href': '#',
+        'target': '_blank'
+      })
+      .append('span')
+      .attr({
+        'class': 'glyphicon glyphicon-new-window',
+        'title': '在新頁面中開啟'
+      });
     if (course.ge_line) {
       title.append('div')
         .attr({
