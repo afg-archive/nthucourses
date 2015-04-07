@@ -11,6 +11,11 @@ th.notes {
 .notes {
   white-space: pre-warp;
 }
+th.sortable > span.text {
+  cursor: pointer;
+  text-decoration: blink;
+  border-bottom: 1px dotted #333;
+}
 {% endblock %}
 
 {% block content %}
@@ -61,17 +66,21 @@ th.notes {
 </form>
 {% if result %}
 <hr>
-<table class="table" id="results">
-  <caption>{{ result.courses.__len__() }} 個搜尋結果，資料更新於：{{ localftime(result.updated) }}</caption>
+<table class="table" id="resulttable">
+  <caption>{{ result.courses.__len__() }} 個搜尋結果，更新：{{ localtime(result.updated).strftime('%Y/%m/%d') }}，提示：點擊欄位名稱進行排序。</caption>
   <thead>
     <tr>
-      <th>科號</th>
-      <th>名稱</th>
-      <th>教師</th>
-      <th>時段</th>
-      <th>學分</th>
-      <th>人數</th>
-      <th>教室</th>
+      {% for id, text in [
+        ['no', '科號'],
+        ['title', '名稱'],
+        ['teacher', '教師'],
+        ['time', '時間'],
+        ['credit', '學分'],
+        ['npeople', '人數'],
+        ['room', '教室'],
+      ] %}
+      <th class="sortable" id="th_{{ id }}"><span class="text">{{ text }}</span></th>
+      {% endfor %}
       <th class="notes">備註</th>
     </tr>
   </thead>
@@ -83,50 +92,54 @@ th.notes {
 {% if result %}
 <script>
   var result = {{ json(result) }};
-  var table = d3.select("#results").append('tbody');
-  for (var i = 0; i != result.courses.length; ++ i) {
-    var tr = table.append('tr');
-    var course = result.courses[i];
-    tr.append('td').text(course.no);
-    var title = tr.append('td');
-    var titleline = title.append('div');
-    titleline.append('a')
-      .attr({
-        'href': '#syllabusModal',
-        'data-toggle': 'modal',
-        'data-target': '#syllabusModal',
-        'data-index': i
-      })
-      .text(course.title_zh);
-    titleline.append('span').text(' ');
-    titleline.append('a')
-      .attr({
-        'href': '#',
-        'target': '_blank'
-      })
-      .append('span')
-      .attr({
-        'class': 'glyphicon glyphicon-new-window',
-        'title': '在新頁面中開啟'
-      });
-    if (course.ge_line) {
-      title.append('div')
+  var display = function () {
+    d3.select('#resulttable').selectAll('tbody').remove();
+    var table = d3.select('#resulttable').append('tbody');
+    for (var i = 0; i != result.courses.length; ++ i) {
+      var tr = table.append('tr');
+      var course = result.courses[i];
+      tr.append('td').text(course.no);
+      var title = tr.append('td');
+      var titleline = title.append('div');
+      titleline.append('a')
         .attr({
-          'class': 'ge_line'
+          'href': '#syllabusModal',
+          'data-toggle': 'modal',
+          'data-target': '#syllabusModal',
+          'data-index': i
         })
-        .text(course.ge_line);
+        .text(course.title_zh);
+      titleline.append('span').text(' ');
+      titleline.append('a')
+        .attr({
+          'href': '#',
+          'target': '_blank'
+        })
+        .append('span')
+        .attr({
+          'class': 'glyphicon glyphicon-new-window',
+          'title': '在新頁面中開啟'
+        });
+      if (course.ge_line) {
+        title.append('div')
+          .attr({
+            'class': 'ge_line'
+          })
+          .text(course.ge_line);
+      }
+      tr.append('td').text(course.teacher);
+      tr.append('td').text(course.time);
+      tr.append('td').text(course.credit);
+      tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
+      tr.append('td').text(course.room);
+      tr.append('td')
+        .attr({
+          'class': 'notes'
+        })
+        .text(course.notes);
     }
-    tr.append('td').text(course.teacher);
-    tr.append('td').text(course.time);
-    tr.append('td').text(course.credit);
-    tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
-    tr.append('td').text(course.room);
-    tr.append('td')
-      .attr({
-        'class': 'notes'
-      })
-      .text(course.notes);
   }
+  display();
   $('#syllabusModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var index = button.data('index');
@@ -148,6 +161,32 @@ th.notes {
     modal.find('#syllabus-content').text(course.syllabus);
     // modal.find('.modal-body input').val(recipient)
   })
+  var set_current_ordering = function(obj) {
+    obj.append('span').attr('class', 'sorticon').text(' ');
+    obj.append('span').attr('class', 'glyphicon glyphicon-arrow-down sorticon');
+  }
+  var sort_by = function (name) {
+    return function() {
+      d3.selectAll('.sorticon').remove();
+      set_current_ordering(d3.select(this));
+      result.courses.sort( function (a, b) {
+        if (a[name] > b[name]) return 1;
+        if (a[name] < b[name]) return -1;
+        if (a.no > b.no) return 1;
+        if (a.no < b.no) return -1;
+        return 0;
+      });
+      display();
+    }
+  }
+  set_current_ordering(d3.select('#th_no'));
+  $('#th_no').click(sort_by('no'));
+  $('#th_title').click(sort_by('title_zh'));
+  $('#th_teacher').click(sort_by('teacher'));
+  $('#th_time').click(sort_by('time'));
+  $('#th_credit').click(sort_by('credit'));
+  $('#th_npeople').click(sort_by('size_limit'));
+  $('#th_room').click(sort_by('room'));
 </script>
 {% endif %}
 {% endblock %}
