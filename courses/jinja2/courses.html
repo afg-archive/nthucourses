@@ -19,44 +19,6 @@ th.sortable > span.text {
 {% endblock %}
 
 {% block content %}
-<div class="modal" id="syllabusModal" tabindex="-1" role="dialog" aria-labelledby="syllabusModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title" id="syllabusModalLabel"><span id="syllabus-title"></span> <small id="syllabus-title-en"></small></h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-6 col-md-4">
-            <p id="syllabus-no"></p>
-            <p>
-              <span id="syllabus-teacher"></span> -
-              <span id="syllabus-time"></span> @ 
-              <span id="syllabus-room"></span>
-            </p>
-            <p>
-              <span id="syllabus-enrollment"></span> / 
-              <span id="syllabus-size-limit"></span>, 
-              <span id="syllabus-credit"></span> 學分
-            </p>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <p id="syllabus-notes" class="notes"></p>
-          </div>
-          <div class="col-sm-12 col-md-12">
-            <h4>Syllabus</h4>
-            <pre id="syllabus-content"></pre>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="alert alert-warning">
   本站所列之課程資訊僅供參考，實際課程內容請以<a target="_blank" href="https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/6/6.2/6.2.9/JH629001.php">課務組公告</a>為準。
 </div>
@@ -103,23 +65,10 @@ th.sortable > span.text {
       var titleline = title.append('div');
       titleline.append('a')
         .attr({
-          'href': '#syllabusModal',
-          'data-toggle': 'modal',
-          'data-target': '#syllabusModal',
-          'data-index': i
-        })
-        .text(course.title_zh);
-      titleline.append('span').text(' ');
-      titleline.append('a')
-        .attr({
           'href': '/course/' + course.pk + '/',
           'target': '_blank'
         })
-        .append('span')
-        .attr({
-          'class': 'glyphicon glyphicon-new-window',
-          'title': '在新頁面中開啟'
-        });
+        .text(course.title_zh);
       if (course.ge_line) {
         title.append('div')
           .attr({
@@ -140,27 +89,6 @@ th.sortable > span.text {
     }
   }
   display();
-  $('#syllabusModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var index = button.data('index');
-    var course = result.courses[index];
-    // var recipient = button.data('whatever') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    modal.find('#syllabus-title').text(course.title_zh);
-    modal.find('#syllabus-title-en').text(course.title_en);
-    modal.find('#syllabus-no').text(course.no);
-    modal.find('#syllabus-teacher').text(course.teacher);
-    modal.find('#syllabus-time').text(course.time);
-    modal.find('#syllabus-room').text(course.room);
-    modal.find('#syllabus-enrollment').text(course.enrollment);
-    modal.find('#syllabus-size-limit').text(course.size_limit);
-    modal.find('#syllabus-credit').text(course.credit);
-    modal.find('#syllabus-notes').text(course.notes);
-    modal.find('#syllabus-content').text(course.syllabus);
-    // modal.find('.modal-body input').val(recipient)
-  })
   var set_current_ordering = function(obj) {
     obj.append('span').attr('class', 'sorticon').text(' ');
     obj.append('span').attr('class', 'glyphicon glyphicon-arrow-down sorticon');
