@@ -6,16 +6,23 @@ from courses.models import SemesterEntry, Department, Course
 
 
 class Result(dict):
-    def __init__(self, semester, departments):
+    def __init__(self, semester, departments, teacher, title):
         entry = SemesterEntry.objects.get(
             semester__value=semester,
             ready=True)
         semester = entry.semester
-        departments = Department.objects.get(abbr=departments)
-        courses = entry.course_set.filter(departments=departments)
+        courses = entry.course_set.all()
+        if departments:
+            departments = Department.objects.get(abbr=departments)
+            courses = courses = courses.filter(departments=departments)
+            self['departments'] = departments.name_zh
+        if teacher:
+            courses = courses.filter(teacher=teacher)
+        if title:
+            courses = courses.filter(title_zh=title)
         self['semester'] = semester.name
-        self['departments'] = departments.name_zh
-        self['courses'] = [course.todict() for course in courses]
+        self['semester_code'] = semester.value
+        self['courses'] = [course.todict() for course in courses[:200]]
         self.updated = entry.created  # not json serializable
 
 

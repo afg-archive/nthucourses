@@ -54,6 +54,7 @@ th.sortable > span.text {
 {% if result %}
 <script>
   var result = {{ json(result) }};
+  var query_base = '?semester=' + result.semester_code;
   var display = function () {
     d3.select('#resulttable').selectAll('tbody').remove();
     var table = d3.select('#resulttable').append('tbody');
@@ -69,6 +70,14 @@ th.sortable > span.text {
           'target': '_blank'
         })
         .text(course.title_zh);
+      titleline.append('span').text(' ');
+      titleline.append('a')
+        .attr('href', query_base + '&title=' + encodeURIComponent(course.title_zh))
+        .append('span')
+        .attr({
+          'class': 'glyphicon glyphicon-search',
+          'title': '搜尋 "' + course.title_zh + '"'
+        });
       if (course.ge_line) {
         title.append('div')
           .attr({
@@ -76,7 +85,10 @@ th.sortable > span.text {
           })
           .text(course.ge_line);
       }
-      tr.append('td').text(course.teacher);
+      tr.append('td')
+        .append('a')
+        .attr('href', query_base + '&teacher=' + encodeURIComponent(course.teacher))
+        .text(course.teacher);
       tr.append('td').text(course.time);
       tr.append('td').text(course.credit);
       tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
