@@ -1,3 +1,5 @@
+import itertools
+
 from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
@@ -31,6 +33,11 @@ class SemesterEntry(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.semester.value, self.created)
+
+
+class Time(models.Model):
+    index = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=2, db_index=True)
 
 
 class Department(models.Model):
