@@ -85,7 +85,7 @@ class Syllabus(dict):
     syllabus_pattern = re.compile(r'\n{4,}')
     def __init__(self, document):
         def gettext(xpath):
-            return xpath1(document, xpath).text or ''
+            return (xpath1(document, xpath).text or '').strip()
         def getint(xpath):
             xres = xpath1(document, xpath).text
             if xres is None:

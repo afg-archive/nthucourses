@@ -92,8 +92,8 @@ def update_semester(browser=None, semester_code=None):
         for n, course in enumerate(courses.values(), start=1):
             time = course.pop('time')
             time_set = time_pattern.findall(time)
-            course['time_set'] = Time.objects.filter(name__in=time_set)
             dbc = semester_entry.course_set.create(**course)
+            dbc.time_set.add(*Time.objects.filter(name__in=time_set))
             assert time == dbc.time, '%r != %r' % (time, dbc.time)
             print('Updating courses', '...', n, end='\r')
         print()
