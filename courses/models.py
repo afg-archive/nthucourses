@@ -37,6 +37,12 @@ class Time(models.Model):
     index = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=2, db_index=True)
 
+    class Meta:
+        ordering = ('index',)
+
+    def __str__(self):
+        return self.name
+
 
 class Department(models.Model):
     abbr = models.CharField(max_length=4, db_index=True)
