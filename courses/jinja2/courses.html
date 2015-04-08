@@ -47,14 +47,16 @@ th.sortable > span.text {
     <div class="col-md-4 col-sm-5">
       <div id="timeSelectionContent" class="form-group">
         <div class="col-md-12 sol-sm-12">
-          {% for section in '1234n56789abc' %}
-          {% if loop.index0 < 4 %}{% set btn_class = 'success' %}{% elif loop.index < 10 %}{% set btn_class = 'primary' %}{% else %}{% set btn_class = 'warning' %}{% endif %}
+          {% for time_row in time_table %}
+          {% if loop.index < 5 %}{% set btn_class = "success" %}
+          {% elif loop.index > 10 %}{% set btn_class = "warning" %}
+          {% else %}{% set btn_class = "primary" %}
+          {% endif %}
           <div class="btn-group" data-toggle="buttons">
-            {% for day in 'MTWRFS' %}
-            {% set time = day + section %}
+            {% for time in time_row %}
             <label class="btn btn-{{ btn_class }} tablebutton">
-              <input autocomplete="off" name="time" type="checkbox" value="{{ time }}">
-              {{ time }}
+              <input autocomplete="off" name="time" type="checkbox" value="{{ time.index }}">
+              {{ time.name }}
             </label>
             {% endfor %}
           </div>

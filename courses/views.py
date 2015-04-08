@@ -1,12 +1,16 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 
-from courses.forms import CourseForm
-from courses.models import SemesterEntry, Department, Course
+from courses.forms import CourseForm, TimeForm
+from courses.models import SemesterEntry, Department, Course, Time
+
+
+def get_time_table():
+    return zip(*zip(* [iter(Time.objects.all())] * 13))
 
 
 class Result(dict):
-    def __init__(self, semester, departments, teacher, title, timeoperation):
+    def __init__(self, semester, departments, teacher, title, timeoperation, time):
         entry = SemesterEntry.objects.get(
             semester__value=semester,
             ready=True)
@@ -19,6 +23,11 @@ class Result(dict):
             courses = courses.filter(teacher=teacher)
         if title:
             courses = courses.filter(title_zh=title)
+        if timeoperation == 'exclude':
+            db_time = Time.objects.filter(pk__in=time)
+        else:
+            db_time = Time.objects.exclude(pk__in=time)
+        courses = courses.exclude(time_set__in=db_time)
         self['semester'] = semester.name
         self['semester_code'] = semester.value
         self['courses'] = [course.todict() for course in courses[:200]]
@@ -32,26 +41,30 @@ class Curriculum(TemplateView):
     def get(self, request):
         if request.GET:
             form = self.form_class(request.GET)
-            if form.is_valid():
-                return self.form_valid(form)
+            time_form = TimeForm(request.GET)
+            if form.is_valid() and time_form.is_valid():
+                return self.form_valid(form, time_form)
             else:
-                return self.form_invalid(form)
+                return self.form_invalid(form, time_form)
         else:
             return self.render_to_response({
                 'form': self.form_class(),
             })
 
-    def form_valid(self, form):
-        print('haha')
+    def form_valid(self, form, time_form):
         return self.render_to_response({
             'form': form,
-            'result': Result(**form.cleaned_data)
+            'result': Result(time=time_form.cleaned_data['time'], **form.cleaned_data)
         })
 
-    def form_invalid(self, form):
+    def form_invalid(self, form, time_form):
         return self.render_to_response({
             'form': form,
         })
+
+    def render_to_response(self, context):
+        context['time_table'] = get_time_table()
+        return super().render_to_response(context)
 
 
 class CourseView(DetailView):

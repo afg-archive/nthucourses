@@ -1,6 +1,6 @@
 from django import forms
 
-from courses.models import SemesterEntry, Department
+from courses.models import SemesterEntry, Department, Time
 
 
 def get_department_choices():
@@ -48,3 +48,10 @@ class CourseForm(forms.Form):
         label='時段選項',
         initial='exclude',
         widget=forms.RadioSelect())
+
+
+class TimeForm(forms.Form):
+    time = forms.MultipleChoiceField(
+        choices=[(time.pk, time.name) for time in Time.objects.all()],
+        required=False
+    )
