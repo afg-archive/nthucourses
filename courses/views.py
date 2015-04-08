@@ -6,16 +6,15 @@ from courses.models import SemesterEntry, Department, Course
 
 
 class Result(dict):
-    def __init__(self, semester, departments, teacher, title):
+    def __init__(self, semester, departments, teacher, title, timeoperation):
         entry = SemesterEntry.objects.get(
             semester__value=semester,
             ready=True)
         semester = entry.semester
         courses = entry.course_set.all()
         if departments:
-            departments = Department.objects.get(abbr=departments)
-            courses = courses = courses.filter(departments=departments)
-            self['departments'] = departments.name_zh
+            departments = Department.objects.filter(abbr__in=departments)
+            courses = courses = courses.filter(departments__in=departments)
         if teacher:
             courses = courses.filter(teacher=teacher)
         if title:

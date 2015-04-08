@@ -16,15 +16,61 @@ th.sortable > span.text {
   text-decoration: blink;
   border-bottom: 1px dotted #333;
 }
+.btn-group {
+  width: 100%;
+}
+.tablebutton {
+  max-width: 50px;
+  width: 16.66%;
+}
+#timeSelectionContent {
+}
 {% endblock %}
 
 {% block content %}
-<div class="alert alert-warning">
-  本站所列之課程資訊僅供參考，實際課程內容請以<a target="_blank" href="https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/6/6.2/6.2.9/JH629001.php">課務組公告</a>為準。
-</div>
-<form class="form-inline">
-  {{ render_form(form, layout='inline') }}
-  <input class="btn btn-default" type="submit">
+<form class="form-horizontal" action="#resulttable">
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="alert alert-warning">
+        本站所列之課程資訊僅供參考，實際課程內容請以<a target="_blank" href="https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/6/6.2/6.2.9/JH629001.php">課務組公告</a>為準。
+      </div>
+      {{ render_form(form, layout='horizontal', horizontal_label_class='col-sm-3', horizontal_field_class='col-sm-9') }}
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button class="btn btn-primary" type="submit">
+            <span class="glyphicon glyphicon-search"></span>
+            查詢
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-5">
+      <div id="timeSelectionContent" class="form-group">
+        <div class="col-md-12 sol-sm-12">
+          {% for section in '1234n56789abc' %}
+          {% if loop.index0 < 4 %}{% set btn_class = 'success' %}{% elif loop.index < 10 %}{% set btn_class = 'primary' %}{% else %}{% set btn_class = 'warning' %}{% endif %}
+          <div class="btn-group" data-toggle="buttons">
+            {% for day in 'MTWRFS' %}
+            {% set time = day + section %}
+            <label class="btn btn-{{ btn_class }} tablebutton">
+              <input autocomplete="off" name="time" type="checkbox" value="{{ time }}">
+              {{ time }}
+            </label>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="form-group visible-xs">
+        <div class="col-xs-12">
+          <button class="btn btn-primary" type="submit">
+            <span class="glyphicon glyphicon-search"></span>
+            查詢
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </form>
 {% if result %}
 <hr>
@@ -51,8 +97,8 @@ th.sortable > span.text {
 {% endblock %}
 
 {% block endbody %}
-{% if result %}
 <script>
+  {% if result %}
   var result = {{ json(result) }};
   var query_base = '?semester=' + result.semester_code;
   var display = function () {
@@ -127,6 +173,6 @@ th.sortable > span.text {
   $('#th_credit').click(sort_by('credit'));
   $('#th_npeople').click(sort_by('size_limit'));
   $('#th_room').click(sort_by('room'));
+  {% endif %}
 </script>
-{% endif %}
 {% endblock %}
