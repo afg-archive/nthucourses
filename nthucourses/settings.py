@@ -110,6 +110,10 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.facebook.FacebookOAuth2',
 )
 
+# django-bootstrap3
+BOOTSTRAP3 = {
+    'success_css_class': '',
+}
 
 # heroku stuff #
 
