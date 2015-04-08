@@ -53,5 +53,13 @@ class CourseForm(forms.Form):
 class TimeForm(forms.Form):
     time = forms.MultipleChoiceField(
         choices=[(time.pk, time.name) for time in Time.objects.all()],
-        required=False
+        required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.selected_time = ()
+
+    def clean(self, *args, **kwargs):
+        super().clean(*args, **kwargs)
+        self.selected_time = set(map(int, self.cleaned_data.get('time', [])))

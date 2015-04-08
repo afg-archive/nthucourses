@@ -54,8 +54,9 @@ th.sortable > span.text {
           {% endif %}
           <div class="btn-group" data-toggle="buttons">
             {% for time in time_row %}
-            <label class="btn btn-{{ btn_class }} tablebutton">
-              <input autocomplete="off" name="time" type="checkbox" value="{{ time.index }}">
+            {% set selected = time.pk in time_form.selected_time %}
+            <label class="btn btn-{{ btn_class }} tablebutton{% if selected %} active{% endif %}">
+              <input autocomplete="off" name="time" type="checkbox" value="{{ time.index }}"{% if selected %} checked{% endif %}>
               {{ time.name }}
             </label>
             {% endfor %}

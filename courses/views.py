@@ -54,12 +54,14 @@ class Curriculum(TemplateView):
     def form_valid(self, form, time_form):
         return self.render_to_response({
             'form': form,
+            'time_form': time_form,
             'result': Result(time=time_form.cleaned_data['time'], **form.cleaned_data)
         })
 
     def form_invalid(self, form, time_form):
         return self.render_to_response({
             'form': form,
+            'time_form': time_form,
         })
 
     def render_to_response(self, context):
