@@ -3,11 +3,43 @@ from django import forms
 from courses.models import SemesterEntry, Department
 
 
+def get_department_choices():
+    return [
+        (
+            department.abbr,
+            '{} {}'.format(department.abbr, department.name_zh)
+        )
+        for department in Department.objects.all()
+    ]
+
+
+def get_entries():
+    return SemesterEntry.objects.filter(ready=True)
+
+
+def get_semester_initial():
+    targets = get_entries().filter(course__isnull=False).distinct()
+    if targets.exists():
+        return targets.first().semester.value
+    else:
+        return ''
+
+
+def get_semester_choices():
+    return [
+        (semester_entry.semester.value, semester_entry.semester.name)
+        for semester_entry in get_entries()
+    ]
+
+
 class CourseForm(forms.Form):
-    semester = forms.ChoiceField(label='學期', choices=())
+    semester = forms.ChoiceField(
+        label='學期',
+        choices=get_semester_choices,
+        initial=get_semester_initial)
     departments = forms.MultipleChoiceField(
         label='開課單位',
-        choices=(),
+        choices=get_department_choices,
         required=False)
     teacher = forms.CharField(label='教師', required=False)
     title = forms.CharField(label='名稱', required=False)
@@ -16,28 +48,3 @@ class CourseForm(forms.Form):
         label='時段選項',
         initial='exclude',
         widget=forms.RadioSelect())
-
-    def __init__(self, *args, **kwargs):
-        entries = SemesterEntry.objects.filter(ready=True)
-        entries_notempty = entries.filter(course__isnull=False).distinct()
-
-        if entries_notempty.exists():
-            initial = kwargs.setdefault('initial', {})
-            initial.setdefault(
-                'semester',
-                entries_notempty.first().semester.value)
-
-        super().__init__(*args, **kwargs)
-
-        self.fields['semester'].choices = [
-            (semester_entry.semester.value, semester_entry.semester.name)
-            for semester_entry in entries
-        ]
-
-        self.fields['departments'].choices = [
-            (
-                department.abbr,
-                '{} {}'.format(department.abbr, department.name_zh)
-            )
-            for department in Department.objects.all()
-        ]
