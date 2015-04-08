@@ -66,7 +66,7 @@ class Course(models.Model):
     title_en = models.CharField(max_length=TYPICAL_SIZE)
     ge_line = models.CharField(max_length=TYPICAL_SIZE)
     credit = models.IntegerField()
-    time = models.CharField(max_length=TYPICAL_SIZE)  # TODO
+    time_set = models.ManyToManyField(Time)
     room = models.CharField(max_length=TYPICAL_SIZE)
     capacity = models.IntegerField(null=True)
     teacher = models.CharField(max_length=TYPICAL_SIZE)
@@ -92,3 +92,7 @@ class Course(models.Model):
     def todict(self):
         fields = ('pk', 'no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment')  # NOQA
         return {field: getattr(self, field) for field in fields}
+
+    @property
+    def time(self):
+        return ''.join(map(str, self.time_set.all()))

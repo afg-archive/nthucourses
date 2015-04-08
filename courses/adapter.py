@@ -1,10 +1,14 @@
 import operator
 import json
+import re
 
 import requests
 
-from courses.models import Semester, Department, Course
+from courses.models import Semester, Department, Course, Time
 from ccxp.fetch import Browser
+
+
+time_pattern = re.compile('[MTWRFS][1234n56789abc]')
 
 
 def get_browser(browser=None):
@@ -86,7 +90,11 @@ def update_semester(browser=None, semester_code=None):
     semester_entry = semester.semesterentry_set.create()
     try:
         for n, course in enumerate(courses.values(), start=1):
-            semester_entry.course_set.create(**course)
+            time = course.pop('time')
+            time_set = time_pattern.findall(time)
+            course['time_set'] = Time.objects.filter(name__in=time_set)
+            dbc = semester_entry.course_set.create(**course)
+            assert time == dbc.time, '%r != %r' % (time, dbc.time)
             print('Updating courses', '...', n, end='\r')
         print()
         for n, (department, course_nos) in enumerate(departments.items()):
