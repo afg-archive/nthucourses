@@ -6,18 +6,6 @@ from django.core.urlresolvers import reverse
 TYPICAL_SIZE = 256
 
 
-class Meta(models.Model):
-    departments_updated = models.DateTimeField()
-
-    @classmethod
-    def get(cls):
-        if cls.objects.count():
-            return cls.objects.get()
-        else:
-            return cls.objects.create(
-                departments_updated=timezone.now(),
-            )
-
 class Semester(models.Model):
     value = models.CharField(max_length=6, db_index=True)
     year = models.IntegerField()
