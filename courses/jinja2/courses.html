@@ -107,6 +107,7 @@ th.sortable > span.text {
     for (var i = 0; i != result.courses.length; ++ i) {
       var tr = table.append('tr');
       var course = result.courses[i];
+      console.log(course.time_indexes);
       tr.append('td').text(course.no);
       var title = tr.append('td');
       var titleline = title.append('div');
@@ -169,7 +170,7 @@ th.sortable > span.text {
   $('#th_no').click(sort_by('no'));
   $('#th_title').click(sort_by('title_zh'));
   $('#th_teacher').click(sort_by('teacher'));
-  $('#th_time').click(sort_by('time'));
+  $('#th_time').click(sort_by('time_indexer'));
   $('#th_credit').click(sort_by('credit'));
   $('#th_npeople').click(sort_by('size_limit'));
   $('#th_room').click(sort_by('room'));
