@@ -158,15 +158,16 @@ th.sortable > span.text {
     obj.append('span').attr('class', 'sorticon').text(' ');
     obj.append('span').attr('class', 'glyphicon glyphicon-arrow-down sorticon');
   };
-  var sort_by = function (name) {
+  var sort_by = function (name, reverse) {
+    var direction = reverse ? -1: 1;
     return function() {
       d3.selectAll('.sorticon').remove();
       set_current_ordering(d3.select(this));
       result.courses.sort( function (a, b) {
-        if (a[name] > b[name]) return 1;
-        if (a[name] < b[name]) return -1;
-        if (a.no > b.no) return 1;
-        if (a.no < b.no) return -1;
+        if (a[name] > b[name]) return direction;
+        if (a[name] < b[name]) return -direction;
+        if (a.no > b.no) return direction;
+        if (a.no < b.no) return -direction;
         return 0;
       });
       display();
@@ -177,8 +178,8 @@ th.sortable > span.text {
   $('#th_title').click(sort_by('title_zh'));
   $('#th_teacher').click(sort_by('teacher'));
   $('#th_time').click(sort_by('time_indexer'));
-  $('#th_credit').click(sort_by('credit'));
-  $('#th_npeople').click(sort_by('size_limit'));
+  $('#th_credit').click(sort_by('credit', true));
+  $('#th_npeople').click(sort_by('enrollment', true));
   $('#th_room').click(sort_by('room'));
   {% endif %}
 </script>
