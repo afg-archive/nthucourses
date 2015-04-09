@@ -2,7 +2,7 @@
 
 {% block body %}
 {% include "navbar.html" %}
-<div class="container">
+<div class="{% block container %}container{% endblock %}">
   <h1{% block h1vs %} class="visible-xs"{% endblock %}>{% block h1 %}{% block title %}{% endblock %}{% endblock %}</h1>
   {% block _content %}{% block content %}{% endblock %}{% endblock %}
 </div>
