@@ -28,7 +28,7 @@ th.sortable > span.text {
 {% endblock %}
 
 {% block content %}
-<form class="form-horizontal" action="#resulttable">
+<form class="form-horizontal">
   <div class="row">
     <div class="col-sm-7">
       <div class="alert alert-warning">
@@ -46,7 +46,7 @@ th.sortable > span.text {
     </div>
     <div class="col-md-4 col-sm-5">
       <div id="timeSelectionContent" class="form-group">
-        <div class="col-md-12 sol-sm-12">
+        <div class="col-md-12 col-sm-12" id="timetable">
           {% for time_row in time_table %}
           {% if loop.index < 5 %}{% set btn_class = "success" %}
           {% elif loop.index > 10 %}{% set btn_class = "warning" %}
@@ -55,8 +55,8 @@ th.sortable > span.text {
           <div class="btn-group" data-toggle="buttons">
             {% for time in time_row %}
             {% set selected = time.pk in time_form.selected_time %}
-            <label class="btn btn-{{ btn_class }} tablebutton{% if selected %} active{% endif %}">
-              <input autocomplete="off" name="time" type="checkbox" value="{{ time.index }}"{% if selected %} checked{% endif %}>
+            <label class="btn btn-{{ btn_class }} tablebutton{% if selected %} active{% endif %}" id="label_time_{{ time.index }}">
+              <input autocomplete="off" name="time" type="checkbox" id="id_time_{{ time.index }}" value="{{ time.index }}"{% if selected %} checked{% endif %}>
               {{ time.name }}
             </label>
             {% endfor %}
@@ -107,13 +107,21 @@ th.sortable > span.text {
   var build_url = function(key, value) {
     return query_base + encodeURIComponent(key) + '=' + encodeURIComponent(value) + '#resulttable';
   };
+  var time_click = function(time_indexes) {
+    return function() {
+      for (var i = 0; i != time_indexes.length; ++ i) {
+        label = d3.select('#label_time_' + time_indexes[i])
+        label.classed('active', true);
+        label.select('input').attr('checked', 'checked');
+      }
+    }
+  }
   var display = function () {
     d3.select('#resulttable').selectAll('tbody').remove();
     var table = d3.select('#resulttable').append('tbody');
     for (var i = 0; i != result.courses.length; ++ i) {
       var tr = table.append('tr');
       var course = result.courses[i];
-      console.log(course.time_indexes);
       tr.append('td').text(course.no);
       var title = tr.append('td');
       var titleline = title.append('div');
@@ -142,7 +150,20 @@ th.sortable > span.text {
         .append('a')
         .attr('href', build_url('teacher', course.teacher))
         .text(course.teacher);
-      tr.append('td').text(course.time);
+      var timetd = tr.append('td')
+      timetd.text(course.time);
+      if (course.time) {
+        var time_indexes = course.time_indexes;
+        timetd.append('span').text(' ');
+        timetd.append('a')
+          .attr('href', '#timetable')
+          .on('click', time_click(course.time_indexes))
+          .append('span')
+          .attr({
+            'title': '將此時間加入課表',
+            'class': 'glyphicon glyphicon-plus-sign'
+          });
+      }
       tr.append('td').text(course.credit);
       tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
       tr.append('td').text(course.room);

@@ -90,7 +90,7 @@ class Course(models.Model):
         return reverse('course', kwargs={'pk': self.pk})
 
     def todict(self):
-        fields = ('pk', 'no', 'title_zh', 'title_en', 'ge_line', 'credit', 'time', 'room', 'capacity', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'syllabus', 'syllabus_attachment', 'time_indexer')  # NOQA
+        fields = ('pk', 'no', 'title_zh', 'ge_line', 'credit', 'time', 'room', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'time_indexer', 'time_indexes')  # NOQA
         return {field: getattr(self, field) for field in fields}
 
     @property
@@ -100,3 +100,7 @@ class Course(models.Model):
     @property
     def time_indexer(self):
         return ''.join(format(time.index, '02d') for time in self.time_set.all())
+
+    @property
+    def time_indexes(self):
+        return [time.index for time in self.time_set.all()]
