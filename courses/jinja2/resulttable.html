@@ -1,0 +1,20 @@
+<hr>
+<table class="table" id="resulttable">
+  <caption>{{ result.courses.__len__() }} 個搜尋結果，更新：{{ localtime(result.updated).strftime('%Y/%m/%d') }}，提示：點擊欄位名稱進行排序。</caption>
+  <thead>
+    <tr>
+      {% for id, text in [
+        ['no', '科號'],
+        ['title', '名稱'],
+        ['teacher', '教師'],
+        ['time', '時間'],
+        ['credit', '學分'],
+        ['npeople', '人數'],
+        ['room', '教室'],
+      ] %}
+      <th class="sortable" id="th_{{ id }}"><span class="text">{{ text }}</span></th>
+      {% endfor %}
+      <th class="notes">備註</th>
+    </tr>
+  </thead>
+</table>
