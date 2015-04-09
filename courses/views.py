@@ -49,6 +49,7 @@ class Curriculum(TemplateView):
         else:
             return self.render_to_response({
                 'form': self.form_class(),
+                'time_form': TimeForm(),
             })
 
     def form_valid(self, form, time_form):
