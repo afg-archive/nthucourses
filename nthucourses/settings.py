@@ -57,7 +57,7 @@ ROOT_URLCONF = 'nthucourses.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'BACKEND': 'nthucourses.jinja2_backend.Jinja2',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
