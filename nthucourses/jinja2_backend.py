@@ -9,7 +9,6 @@ class Jinja2(jinja2.Jinja2):
 
 class Template(jinja2.Template):
     def render(self, context=None, request=None):
-        print(context)
         if isinstance(context, Context):
             context = context.flatten()
         return super().render(context=context, request=request)
