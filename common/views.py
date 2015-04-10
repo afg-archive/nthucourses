@@ -1,3 +1,6 @@
+import platform
+
+import django
 from django.views.generic.base import TemplateView
 
 from courses.models import Semester, Department
@@ -15,3 +18,9 @@ class Status(TemplateView):
 
 class About(TemplateView):
     template_name = 'about.html'
+
+    def get_context_data(self):
+        return {
+            'python_version': platform.python_version(),
+            'django_version': django.get_version(),
+        }
