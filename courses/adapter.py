@@ -57,9 +57,10 @@ def update_semesters(browser=None):
 
 def update_semester(browser=None, semester_code=None):
     browser = get_browser(browser)
-    update_departments(browser)
     if semester_code is not None:
         browser.set_semester(semester_code)
+    else:
+        update_departments(browser)
         update_semesters(browser)
     browser_semester = browser.get_current_semester()
     print(browser_semester)
