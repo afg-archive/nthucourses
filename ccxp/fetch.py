@@ -1,7 +1,7 @@
 from urllib.parse import urljoin
 
 import requests
-from lxml.html import fromstring
+import lxml.html
 
 from ccxp.data import Semester, Department, Course, Syllabus, xpath1
 
@@ -11,9 +11,25 @@ syllabus_url = 'https://www.ccxp.nthu.edu.tw/ccxp/INQUIRE/JH/common/Syllabus/1.p
 encoding = 'cp950'
 
 
+def fromstring(string, *args, **kwargs):
+    kwargs.setdefault('parser', lxml.html.HTMLParser())
+    try:
+        return lxml.html.fromstring(string, *args, **kwargs)
+    except:
+        print(string)
+        raise
+
+
+class Session(requests.Session):
+    def get(self, *args, **kwargs):
+        response = super().get(*args, **kwargs)
+        print(response, len(response.content), args, kwargs)
+        return response
+
+
 class Browser:
     def __init__(self, frozen=None):
-        self.session = requests.Session()
+        self.session = Session()
         self.index = self.get_index()
         self.form = self.xpath1('/html/body/div/form')
         self.ACIXSTORE = xpath1(self.form, 'input[@name="ACIXSTORE"]')
