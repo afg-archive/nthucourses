@@ -134,9 +134,13 @@ def get_viable_targets():
     return Semester.objects.exclude(section=30)
 
 
+def update_n(n):
+    update_targets(get_viable_targets()[:n])
+
+
 def update_latest():
-    update_targets(get_viable_targets()[:2])
+    update_n(2)
 
 
 def update_recent():
-    update_targets(get_viable_targets()[:5])
+    update_n(5)
