@@ -20,7 +20,7 @@ def create_time_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0003_time'),
+        ('courses', '0015_time'),
     ]
 
     operations = [

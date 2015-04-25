@@ -7,11 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0001_squashed_0013_auto_20150406_0514'),
+        ('courses', '0016_create_time_data'),
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='Meta',
+        migrations.AlterModelOptions(
+            name='time',
+            options={'ordering': ('index',)},
         ),
     ]

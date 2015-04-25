@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0002_delete_meta'),
+        ('courses', '0014_delete_meta'),
     ]
 
     operations = [

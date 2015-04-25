@@ -7,12 +7,11 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('courses', '0004_auto_20150408_0916'),
+        ('courses', '0013_auto_20150406_0514'),
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='time',
-            options={'ordering': ('index',)},
+        migrations.DeleteModel(
+            name='Meta',
         ),
     ]
