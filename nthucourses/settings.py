@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     'common',
     'courses',
+    'logs',
 )
 
 MIDDLEWARE_CLASSES = (
