@@ -12,6 +12,9 @@ class Log(models.Model):
     started = models.DateTimeField(auto_now_add=True)
     ended = models.DateTimeField(null=True)
 
+    class Meta:
+        ordering = ('-started',)
+
     def __str__(self):
         return '{self.message}: {self.status}'.format(self=self)
 
