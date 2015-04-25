@@ -4,6 +4,7 @@ import django
 from django.views.generic.base import TemplateView
 
 from courses.models import Semester, Department
+from logs.models import Log
 
 
 class Status(TemplateView):
@@ -13,6 +14,7 @@ class Status(TemplateView):
         return {
             'Department': Department,
             'Semester': Semester,
+            'Log': Log,
         }
 
 

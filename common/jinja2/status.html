@@ -3,28 +3,59 @@
 {% block title %}狀態{% endblock %}
 
 {% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <table class="table">
+      <caption>資料類型</caption>
+      <thead>
+        <tr>
+          <th>類型</th>
+          <th>數量</th>
+          <th>更新時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>系所</td>
+          <td>{{ Department.objects.count() }}</td>
+          <td>{% if Department.objects.exists() %}{{ localftime(Department.objects.latest().updated) }}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+          <td>學期</td>
+          <td>{{ Semester.objects.count() }}</td>
+          <td>{% if Semester.objects.exists() %}{{ localftime(Semester.objects.latest().updated) }}{% else %}-{% endif %}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <table class="table">
+      <caption>近期工作</caption>
+      <thead>
+        <tr>
+          <th>工作名稱</th>
+          <th>狀態</th>
+          <th>開始時間</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in Log.objects.all()[:5] %}
+        <tr>
+          <td>{{ log.message }}</td>
+          <td class="text-{% if log.status == 'success' %}success{% elif log.status == 'failure' %}danger{% else %}primary{% endif %}">{{ log.status.capitalize() }}</td>
+          <td>{{ localftime(log.started) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3">沒有被紀錄的任務</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 <table class="table">
-  <thead>
-    <tr>
-      <th>類型</th>
-      <th>數量</th>
-      <th>更新時間</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>系所</td>
-      <td>{{ Department.objects.count() }}</td>
-      <td>{% if Department.objects.exists() %}{{ localftime(Department.objects.latest().updated) }}{% else %}-{% endif %}</td>
-    </tr>
-    <tr>
-      <td>學期</td>
-      <td>{{ Semester.objects.count() }}</td>
-      <td>{% if Semester.objects.exists() %}{{ localftime(Semester.objects.latest().updated) }}{% else %}-{% endif %}</td>
-    </tr>
-  </tbody>
-</table>
-<table class="table">
+  <caption>各學期統計</caption>
   <thead>
     <tr>
       <th>學期</th>
