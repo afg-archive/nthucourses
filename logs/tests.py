@@ -74,3 +74,10 @@ class LoggerTestCase(TestCase):
             self.assertMultiLineEqual(log.traceback, traceback.format_exc())
         else:
             self.fail('KeyError not raised')
+
+    def test_time_is_recorded(self):
+        with Logger('test_time_is_recorded') as log:
+            self.assertIsNot(log.started, None)
+            self.assertIs(log.ended, None)
+        self.assertIsNot(log.started, None)
+        self.assertIsNot(log.ended, None)
