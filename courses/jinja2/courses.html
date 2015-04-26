@@ -72,7 +72,7 @@ th.sortable > span.text {
       var titleline = title.append('div');
       titleline.append('a')
         .attr({
-          'href': '/course/' + course.pk + '/',
+          'href': course.href,
           'target': '_blank'
         })
         .text(course.title_zh);

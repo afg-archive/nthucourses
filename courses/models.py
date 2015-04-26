@@ -87,11 +87,37 @@ class Course(models.Model):
         return self.no
 
     def get_absolute_url(self):
+        semester = self.semester_entry.semester
+        return reverse(
+            'course',
+            kwargs={
+                'no': self.no,
+            }
+        )
         return reverse('course', kwargs={'pk': self.pk})
 
     def todict(self):
-        fields = ('pk', 'no', 'title_zh', 'ge_line', 'credit', 'time', 'room', 'teacher', 'size_limit', 'freshmen_reserved', 'notes', 'enrollment', 'object', 'prerequisite', 'required_by', 'time_indexer', 'time_indexes')  # NOQA
-        return {field: getattr(self, field) for field in fields}
+        fields = (
+            'pk',
+            'no',
+            'title_zh',
+            'ge_line',
+            'credit',
+            'time',
+            'room',
+            'teacher',
+            'size_limit',
+            'freshmen_reserved',
+            'notes', 'enrollment',
+            'object',
+            'prerequisite',
+            'required_by',
+            'time_indexer',
+            'time_indexes'
+        )
+        result = {field: getattr(self, field) for field in fields}
+        result['href'] = self.get_absolute_url()
+        return result
 
     @property
     def time(self):

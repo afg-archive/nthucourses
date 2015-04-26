@@ -1,5 +1,6 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.shortcuts import get_object_or_404
 
 from courses.forms import CourseForm, TimeForm
 from courses.models import SemesterEntry, Department, Course, Time
@@ -72,7 +73,17 @@ class Curriculum(TemplateView):
 
 class CourseView(DetailView):
     template_name = 'course.html'
-    model = Course
+    queryset = Course.objects.filter(semester_entry__ready=True)
+
+    def get_object(self):
+        queryset = self.get_queryset()
+
+        no = self.kwargs['no']
+
+        return get_object_or_404(
+            queryset,
+            no=no,
+        )
 
     def get_context_data(self, *, object):
         context = super().get_context_data(object=object)
