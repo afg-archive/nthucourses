@@ -72,6 +72,9 @@ class Course(dict):
                 size_limit_str, _, freshmen_reserved
             ) = size_limit_str.rstrip('人').partition('大一新生保留')
             self['size_limit'] = int(size_limit_str)
+            if freshmen_reserved:
+                self['freshmen_reserved'] = int(freshmen_reserved)
+                print(self['no'], self['freshmen_reserved'])
         else:
             self['size_limit'] = self['freshmen_reserved'] = None
         self['notes'] = '\n'.join(filter(None, extract_multirow(tds[7])))
