@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.core.urlresolvers import reverse
 
 
@@ -87,7 +86,6 @@ class Course(models.Model):
         return self.no
 
     def get_absolute_url(self):
-        semester = self.semester_entry.semester
         return reverse(
             'course',
             kwargs={
@@ -126,7 +124,8 @@ class Course(models.Model):
 
     @property
     def time_indexer(self):
-        return ''.join(format(time.index, '02d') for time in self.time_set.all())
+        return ''.join(
+            format(time.index, '02d') for time in self.time_set.all())
 
     @property
     def time_indexes(self):
