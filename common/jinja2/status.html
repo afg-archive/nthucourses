@@ -42,7 +42,7 @@
         {% for log in Log.objects.all()[:5] %}
         <tr>
           <td>{{ log.message }}</td>
-          <td class="text-{% if log.status == 'success' %}success{% elif log.status == 'failure' %}danger{% else %}primary{% endif %}">
+          <td class="text-{% if log.status == 'success' %}success{% elif log.status == 'failure' %}danger{% else %}warning{% endif %}">
             {% if log.status == 'failure' %}<span title="{{ log.exc_name }}">{% endif %}
             {{ log.status.capitalize() }}
             {% if log.status == 'failure' %}</span>{% endif %}
