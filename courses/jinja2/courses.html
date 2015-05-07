@@ -110,7 +110,12 @@ th.sortable > span.text {
           });
       }
       tr.append('td').text(course.credit);
-      tr.append('td').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
+      var size_td = tr.append('td')
+      size_td.append('div').text(course.enrollment + (course.size_limit? " / " + course.size_limit: "" ));
+      if (course.freshmen_reserved) {
+        size_td.append('div').text('新生保留: ' + course.freshmen_reserved);
+      }
+      size_td.append('span').text()
       tr.append('td').text(course.room);
       tr.append('td')
         .attr({

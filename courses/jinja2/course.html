@@ -18,8 +18,9 @@
     <div class="row">
   <div class="col-sm-6">
     <p>{{ course.no }}</p>
-    <p>{{ course.teacher }} - {{ course.time }} @ {{ course.room }}
-    <p>{{ course.enrollment }} / {{ course.size_limit }}, {{ course.credit }} 學分</p>
+    <p>{{ course.teacher }} - {{ course.time }} @ {{ course.room }}</p>
+    <p>{{ course.credit }} 學分</p>
+    <p>{{ course.enrollment }} / {{ course.size_limit }} 人{% if course.freshmen_reserved %}, 新生保留: {{ course.freshmen_reserved }}{% endif %}</p>
   </div>
   <div class="col-sm-6">
     <p class="notes">{{ course.notes }}</p>
