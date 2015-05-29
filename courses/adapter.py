@@ -136,11 +136,3 @@ def get_viable_targets():
 
 def update_n(n):
     update_targets(get_viable_targets()[:n])
-
-
-def update_latest():
-    update_n(2)
-
-
-def update_recent():
-    update_n(5)
