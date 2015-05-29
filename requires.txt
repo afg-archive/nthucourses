@@ -1,4 +1,5 @@
 Django==1.8.2
+django-bootstrap3==5.4.0
 Jinja2==2.7.3
 lxml==3.4.4
 MarkupSafe==0.23
