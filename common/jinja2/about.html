@@ -9,5 +9,8 @@
   <li><a target="_blank" href="https://www.djangoproject.com">Django</a> {{ django_version }}</li>
 </ul>
 <h3>意見、問題回報</h3>
-<p>Bitbucket issue tracker - <a href="https://bitbucket.org/afg984/nthucourses/issues" target="_blank">https://bitbucket.org/afg984/nthucourses/issues</a></p>
+{% set repo_url = "https://github.com/afg984/nthucourses" %}
+{% set issue_tracker_url = "https://github.com/afg984/nthucourses/issues" %}
+<p>GitHub - <a href="{{ repo_url }}" target="_blank">{{ repo_url }}</a></p>
+<p>issue tracker - <a href="{{ issue_tracker_url }}" target="_blank">{{ issue_tracker_url }}</a></p>
 {% endblock %}
