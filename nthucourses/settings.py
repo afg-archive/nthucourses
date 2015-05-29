@@ -102,15 +102,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Social Auth Namespace
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_FACEBOOK_KEY = '351543315038695'
-SOCIAL_AUTH_FACEBOOK_SECRET = '9885e4926f9adf5537843122c5c3ab9f'
-
-AUTHENTICATION_BACKENDS = (
-    'social.backends.facebook.FacebookOAuth2',
-)
-
 # django-bootstrap3
 BOOTSTRAP3 = {
     'success_css_class': '',
